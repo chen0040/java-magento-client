@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -79,6 +76,54 @@ public class HttpClient implements Serializable {
          HttpPost request = new HttpPost(url);
          StringEntity params = new StringEntity(body);
          request.addHeader("content-type", "application/json");
+         request.setEntity(params);
+         CloseableHttpResponse result = httpClient.execute(request);
+         if (result.getEntity() != null) {
+            json = EntityUtils.toString(result.getEntity(), DATA_ENCODING);
+         }
+         result.close();
+         httpClient.close();
+      }
+      catch (IOException ex) {
+         json = ex.getMessage();
+      }
+
+      return json;
+   }
+
+   public static String post(final String url, String body, Map<String, String> headers) {
+      CloseableHttpClient httpClient = buildClient();
+      String json = "";
+      try {
+         HttpPost request = new HttpPost(url);
+         StringEntity params = new StringEntity(body);
+         for(Map.Entry<String, String> entry : headers.entrySet()) {
+            request.addHeader(entry.getKey(), entry.getValue());
+         }
+         request.setEntity(params);
+         CloseableHttpResponse result = httpClient.execute(request);
+         if (result.getEntity() != null) {
+            json = EntityUtils.toString(result.getEntity(), DATA_ENCODING);
+         }
+         result.close();
+         httpClient.close();
+      }
+      catch (IOException ex) {
+         json = ex.getMessage();
+      }
+
+      return json;
+   }
+
+   public static String put(final String url, String body, Map<String, String> headers) {
+      CloseableHttpClient httpClient = buildClient();
+      String json = "";
+      try {
+         HttpPut request = new HttpPut(url);
+         StringEntity params = new StringEntity(body);
+         for(Map.Entry<String, String> entry : headers.entrySet()) {
+            request.addHeader(entry.getKey(), entry.getValue());
+         }
          request.setEntity(params);
          CloseableHttpResponse result = httpClient.execute(request);
          if (result.getEntity() != null) {

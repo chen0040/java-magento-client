@@ -3,6 +3,9 @@ package com.github.chen0040.magento;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.github.chen0040.magento.models.Account;
+import com.github.chen0040.magento.models.Product;
 import com.github.chen0040.magento.models.ProductPage;
 import com.github.chen0040.magento.models.ProductType;
 import lombok.Getter;
@@ -47,7 +50,59 @@ public class MagentoClient implements Serializable {
               + "?searchCriteria[currentPage]=" + pageIndex
               + "&searchCriteria[pageSize]=" + pageSize;
       String json = getSecured(uri);
+      if(!validate(json)){
+         return null;
+      }
+
       return JSON.parseObject(json, ProductPage.class);
+   }
+
+   public Product getProductBySku(String sku) {
+      String uri = baseUri + "/" + relativePath4Products + "/" + sku;
+      String json = getSecured(uri);
+
+      if(!validate(json)){
+         return null;
+      }
+
+      return JSON.parseObject(json, Product.class);
+   }
+
+   public String addProduct(Product product){
+      String sku = product.getSku();
+      String url = baseUri + "/" + relativePath4Products + "/" + sku;
+
+      Map<String, Object> detail = new HashMap<>();
+
+      detail.put("sku", product.getSku());
+      detail.put("name", product.getName());
+      detail.put("price", product.getPrice());
+      detail.put("status", product.getStatus());
+      detail.put("type_id", product.getType_id());
+      detail.put("attribute_set_id", product.getAttribute_set_id());
+      detail.put("weight", product.getWeight());
+
+      Map<String, Object> req = new HashMap<>();
+      req.put("product", detail);
+
+      String body = JSON.toJSONString(req, SerializerFeature.PrettyFormat);
+      logger.info("posting:\r\n{}", body);
+      String json = putSecure(url, body);
+      return json;
+   }
+
+   public String postSecure(String url, String body){
+      Map<String, String> headers = new HashMap<>();
+      headers.put("Authorization", "Bearer " + this.token);
+      headers.put("Content-Type", "application/json");
+      return HttpClient.post(url, body, headers);
+   }
+
+   private String putSecure(String url, String body) {
+      Map<String, String> headers = new HashMap<>();
+      headers.put("Authorization", "Bearer " + this.token);
+      headers.put("Content-Type", "application/json");
+      return HttpClient.put(url, body, headers);
    }
 
    public String listProducts(String name, String value, String condition_type) {
@@ -60,9 +115,16 @@ public class MagentoClient implements Serializable {
 
    public List<ProductType> listProductTypes() {
       String uri = baseUri + "/rest/V1/products/types"
-              + "?searchCriteria[filter_groups][0][filters][0][field]=category_gear"
-              + "&searchCriteria[filter_groups][0][filters][0][value]=86"
-              + "&searchCriteria[filter_groups][0][filters][0][condition_type]=finset";
+              + "?searchCriteria[currentPage]=0"
+              + "&searchCriteria[pageSize]=1000";
+      String json = getSecured(uri);
+      return JSON.parseArray(json, ProductType.class);
+   }
+
+   public List<ProductType> listProductTypes(int page, int pageSize) {
+      String uri = baseUri + "/rest/V1/products/types"
+              + "?searchCriteria[currentPage]=" + page
+              + "&searchCriteria[pageSize]=" + pageSize;
       String json = getSecured(uri);
       return JSON.parseArray(json, ProductType.class);
    }
@@ -75,17 +137,32 @@ public class MagentoClient implements Serializable {
    }
 
 
-   public Map<String, Object> getMyAccount() {
+   public Account getMyAccount() {
       if(admin){
          logger.warn("my account access api is not supported for admin rest call");
-         return new HashMap<>();
+         return null;
       }
 
       //"http://magento.ll/index.php/rest/V1/customers/me" -H "Authorization: Bearer asdf3hjklp5iuytre"
       String uri = this.baseUri + "/rest/V1/customers/me";
       String json = getSecured(uri);
+
+      if(!validate(json)) {
+         return null;
+      }
+
+      return JSON.parseObject(json, Account.class);
+   }
+
+   private boolean validate(String json) {
       Map<String, Object> data = JSON.parseObject(json, new TypeReference<Map<String, Object>>(){}.getType());
-      return data;
+
+      if(data.containsKey("message")) {
+         logger.error("query failed: {}", data.get("message"));
+         logger.warn("trace: {}", data.get("trace"));
+         return false;
+      }
+      return true;
    }
 
    public Map<String, Object> getAccountById(long id) {

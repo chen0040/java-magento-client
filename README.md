@@ -31,3 +31,7 @@ MagentoClient client = new MagentoClient(magento_site_url);
 String token = client.loginAsAdmin(username, password);
 logger.info("account with id 1: {}", client.getAccountById(1));
 ```
+
+# Notes
+
+* http://devdocs.magento.com/guides/v2.1/howdoi/webapi/search-criteria.html
