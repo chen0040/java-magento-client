@@ -3,6 +3,8 @@ package com.github.chen0040.magento;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.github.chen0040.magento.models.ProductPage;
+import com.github.chen0040.magento.models.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -39,11 +42,12 @@ public class MagentoClient implements Serializable {
       this.baseUri = baseUri;
    }
 
-   public String listProducts(int pageIndex, int pageSize) {
+   public ProductPage listProducts(int pageIndex, int pageSize) {
       String uri = baseUri + "/" + relativePath4Products
               + "?searchCriteria[currentPage]=" + pageIndex
               + "&searchCriteria[pageSize]=" + pageSize;
-      return getSecured(uri);
+      String json = getSecured(uri);
+      return JSON.parseObject(json, ProductPage.class);
    }
 
    public String listProducts(String name, String value, String condition_type) {
@@ -54,12 +58,13 @@ public class MagentoClient implements Serializable {
       return getSecured(uri);
    }
 
-   public String listProductTypes() {
+   public List<ProductType> listProductTypes() {
       String uri = baseUri + "/rest/V1/products/types"
               + "?searchCriteria[filter_groups][0][filters][0][field]=category_gear"
               + "&searchCriteria[filter_groups][0][filters][0][value]=86"
               + "&searchCriteria[filter_groups][0][filters][0][condition_type]=finset";
-      return getSecured(uri);
+      String json = getSecured(uri);
+      return JSON.parseArray(json, ProductType.class);
    }
 
    public String getSecured(String uri) {

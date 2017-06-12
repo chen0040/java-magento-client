@@ -1,6 +1,8 @@
 package com.github.chen0040.magento;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -25,7 +27,7 @@ public class MagentoClientUnitTest {
       MagentoClient client = new MagentoClient(Mediator.url);
       String token = client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
       logger.info("account with id = 1: {}", client.getAccountById(1));
-      logger.info("product types: {}", client.listProductTypes());
-      logger.info(client.listProducts(0, 10));
+      logger.info("product types: \r\n{}", JSON.toJSONString(client.listProductTypes(), SerializerFeature.PrettyFormat));
+      logger.info("product page: \r\n{}", JSON.toJSONString(client.listProducts(0, 10), SerializerFeature.PrettyFormat));
    }
 }
