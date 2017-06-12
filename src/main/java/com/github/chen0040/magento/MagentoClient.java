@@ -68,7 +68,11 @@ public class MagentoClient implements Serializable {
       return JSON.parseObject(json, Product.class);
    }
 
-   public String addProduct(Product product){
+   public boolean hasProduct(String sku) {
+      return getProductBySku(sku) != null;
+   }
+
+   public Product addProduct(Product product){
       String sku = product.getSku();
       String url = baseUri + "/" + relativePath4Products + "/" + sku;
 
@@ -88,7 +92,12 @@ public class MagentoClient implements Serializable {
       String body = JSON.toJSONString(req, SerializerFeature.PrettyFormat);
       logger.info("posting:\r\n{}", body);
       String json = putSecure(url, body);
-      return json;
+
+      if(!validate(json)){
+         return null;
+      }
+
+      return JSON.parseObject(json, Product.class);
    }
 
    public String postSecure(String url, String body){
@@ -103,6 +112,13 @@ public class MagentoClient implements Serializable {
       headers.put("Authorization", "Bearer " + this.token);
       headers.put("Content-Type", "application/json");
       return HttpClient.put(url, body, headers);
+   }
+
+   private String deleteSecure(String url) {
+      Map<String, String> headers = new HashMap<>();
+      headers.put("Authorization", "Bearer " + this.token);
+      headers.put("Content-Type", "application/json");
+      return HttpClient.delete(url, headers);
    }
 
    public String listProducts(String name, String value, String condition_type) {
@@ -201,5 +217,11 @@ public class MagentoClient implements Serializable {
          authenticated = true;
       }
       return token;
+   }
+
+
+   public String deleteProduct(String sku) {
+      String url = baseUri + "/" + relativePath4Products + "/" + sku;
+      return deleteSecure(url);
    }
 }
