@@ -45,13 +45,14 @@ client.loginAsAdmin(username, password);
 
 int pageIndex = 0;
 int pageSize = 10;
-client.listProducts(pageIndex, pageSize);
+ProductPage page = client.products().page(pageIndex, pageSize);
+List<Product> products = page.getItems();
 
 // check if product by sku exists
-boolean exists = client.hasProduct(sku);
+boolean exists = client.products().hasProduct(sku);
 
 // get product detail 
-Product product = client.getProductBySku(sku);
+Product product = client.products().getProductBySku(sku);
 
 // create or update a product 
 Product newProduct = new Product();
@@ -62,10 +63,28 @@ newProduct.setStatus(1);
 newProduct.setType_id("simple");
 newProduct.setAttribute_set_id(4);
 newProduct.setWeight(1);
-Product saveProduct = client.addProduct(newProduct);
+Product saveProduct = client.products().addProduct(newProduct);
 
 // delete a product
-client.deleteProduct(sku);
+client.products().deleteProduct(sku);
+```
+
+### Category Management
+
+The sample code below show how to list categories, get a particular category, or list/add/remove products under a category
+ 
+```java
+MagentoClient client = new MagentoClient(magento_site_url);
+client.loginAsAdmin(username, password);
+
+// list categories
+Category page = client.categories().page(0, 10);
+
+// get the category that has id = 15
+Category category15 = client.categories().getCategoryById(15);
+
+// list products under category 15
+List<CategoryProduct> products = client.categories().getProductsInCategory(15);
 ```
 
 # Notes
