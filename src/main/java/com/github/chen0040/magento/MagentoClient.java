@@ -1,6 +1,10 @@
 package com.github.chen0040.magento;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +16,8 @@ import java.util.Map;
 /**
  * Created by xschen on 12/6/2017.
  */
+@Getter
+@Setter
 public class MagentoClient implements Serializable {
    private static final long serialVersionUID = 3001998767951271632L;
    private static final String relativePath4LoginAsClient = "rest/V1/integration/customer/token";
@@ -25,26 +31,68 @@ public class MagentoClient implements Serializable {
 
    private String baseUri = "";
 
+   private boolean admin = false;
+
+   private boolean authenticated = false;
+
    public MagentoClient(String baseUri) {
       this.baseUri = baseUri;
    }
 
-   public String listProduct() {
-      String uri = baseUri + "/" + relativePath4Products;
+   public String listProducts(int pageIndex, int pageSize) {
+      String uri = baseUri + "/" + relativePath4Products
+              + "?searchCriteria[currentPage]=" + pageIndex
+              + "&searchCriteria[pageSize]=" + pageSize;
       return getSecured(uri);
    }
 
-   private String getSecured(String uri) {
+   public String listProducts(String name, String value, String condition_type) {
+      String uri = baseUri + "/" + relativePath4Products
+              + "?searchCriteria[filter_groups][0][filters][0][field]=category_gear"
+              + "&searchCriteria[filter_groups][0][filters][0][value]=86"
+              + "&searchCriteria[filter_groups][0][filters][0][condition_type]=finset";
+      return getSecured(uri);
+   }
+
+   public String listProductTypes() {
+      String uri = baseUri + "/rest/V1/products/types"
+              + "?searchCriteria[filter_groups][0][filters][0][field]=category_gear"
+              + "&searchCriteria[filter_groups][0][filters][0][value]=86"
+              + "&searchCriteria[filter_groups][0][filters][0][condition_type]=finset";
+      return getSecured(uri);
+   }
+
+   public String getSecured(String uri) {
       Map<String, String> headers = new HashMap<>();
       headers.put("Authorization", "Bearer " + this.token);
       headers.put("Content-Type", "application/json");
       return HttpClient.get(uri, headers);
    }
 
-   public String getMyAccount() {
+
+   public Map<String, Object> getMyAccount() {
+      if(admin){
+         logger.warn("my account access api is not supported for admin rest call");
+         return new HashMap<>();
+      }
+
       //"http://magento.ll/index.php/rest/V1/customers/me" -H "Authorization: Bearer asdf3hjklp5iuytre"
       String uri = this.baseUri + "/rest/V1/customers/me";
-      return getSecured(uri);
+      String json = getSecured(uri);
+      Map<String, Object> data = JSON.parseObject(json, new TypeReference<Map<String, Object>>(){}.getType());
+      return data;
+   }
+
+   public Map<String, Object> getAccountById(long id) {
+      if(!admin){
+         logger.warn("other account access api is not supported for client rest call");
+         return new HashMap<>();
+      }
+
+      String uri = this.baseUri + "/rest/V1/customers/" + id;
+      String json = getSecured(uri);
+      Map<String, Object> data = JSON.parseObject(json, new TypeReference<Map<String, Object>>(){}.getType());
+      return data;
    }
 
    public String loginAsClient(String username, String password) {
@@ -54,6 +102,9 @@ public class MagentoClient implements Serializable {
       data.put("password", password);
       this.token = StringUtils.stripQuotation(HttpClient.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
+      if(!token.contains("Invalid login or password")){
+         authenticated = true;
+      }
       return token;
    }
 
@@ -64,6 +115,9 @@ public class MagentoClient implements Serializable {
       data.put("password", password);
       token = StringUtils.stripQuotation(HttpClient.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
+      if(!token.contains("Invalid login or password")){
+         authenticated = true;
+      }
       return token;
    }
 }
