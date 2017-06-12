@@ -23,29 +23,46 @@ public class MagentoClient implements Serializable {
 
    private String token = null;
 
-   public String listProduct(String uri) {
-      uri = uri + "/" + relativePath4Products;
+   private String baseUri = "";
+
+   public MagentoClient(String baseUri) {
+      this.baseUri = baseUri;
+   }
+
+   public String listProduct() {
+      String uri = baseUri + "/" + relativePath4Products;
+      return getSecured(uri);
+   }
+
+   private String getSecured(String uri) {
       Map<String, String> headers = new HashMap<>();
       headers.put("Authorization", "Bearer " + this.token);
+      headers.put("Content-Type", "application/json");
       return HttpClient.get(uri, headers);
    }
 
-   public String loginAsClient(String uri, String username, String password) {
-      uri = uri + "/" + relativePath4LoginAsClient;
+   public String getMyAccount() {
+      //"http://magento.ll/index.php/rest/V1/customers/me" -H "Authorization: Bearer asdf3hjklp5iuytre"
+      String uri = this.baseUri + "/rest/V1/customers/me";
+      return getSecured(uri);
+   }
+
+   public String loginAsClient(String username, String password) {
+      String uri = baseUri + "/" + relativePath4LoginAsClient;
       Map<String, String> data = new HashMap<>();
       data.put("username", username);
       data.put("password", password);
-      this.token = HttpClient.jsonPost(uri, data);
+      this.token = StringUtils.stripQuotation(HttpClient.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
       return token;
    }
 
-   public String loginAsAdmin(String uri, String username, String password) {
-      uri = uri + "/" + relativePath4LoginAsAdmin;
+   public String loginAsAdmin(String username, String password) {
+      String uri = baseUri + "/" + relativePath4LoginAsAdmin;
       Map<String, String> data = new HashMap<>();
       data.put("username", username);
       data.put("password", password);
-      token = HttpClient.jsonPost(uri, data);
+      token = StringUtils.stripQuotation(HttpClient.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
       return token;
    }
