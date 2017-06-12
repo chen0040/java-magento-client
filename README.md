@@ -3,7 +3,7 @@ Java client for communicating with Magento2 site
 
 # Features
 
-The java client provides access to web apis as listed in [link](http://devdocs.magento.com/guides/v2.1/howdoi/webapi/search-criteria.html) currently available for Magent 2.16.
+The java client provides access to web apis as listed in [link](http://devdocs.magento.com/swagger/index.html) and [link2](http://devdocs.magento.com/guides/v2.0/rest/list.html) currently available for Magent 2.16.
 
 As Magento2 by default enable a feature preventing anonymous access to most of the [web APIs](http://devdocs.magento.com/guides/v2.0/rest/anonymous-api-security.html) which could cause third-party integrations to fail. If a third-party integration calls any of these web APIs, it will receive an authentication error instead of the expected response. In this case, you might need to disable this feature. To disable this feature, log in to the Admin panel and navigate to Stores > Configuration > Services > Magento Web API > Web API Security. Then select Yes from the Allow Anonymous Guest Access menu.
 
@@ -85,6 +85,15 @@ Category category15 = client.categories().getCategoryById(15);
 
 // list products under category 15
 List<CategoryProduct> products = client.categories().getProductsInCategory(15);
+
+// add product to category
+long categoryId = 15;
+String productSku = "B202-SKU";
+int position = 1;
+boolean added = client.categories().addProductToCategory(categoryId, productSku, position);
+
+// remove product from category
+boolean removed = client.categories().removeProductFromCategory(categoryId, productSku);
 ```
 
 # Notes

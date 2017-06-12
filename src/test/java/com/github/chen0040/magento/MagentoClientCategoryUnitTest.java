@@ -47,4 +47,27 @@ public class MagentoClientCategoryUnitTest {
       List<CategoryProduct> products = client.categories().getProductsInCategory(id);
       logger.info("products in category 15:\r\n{}", JSON.toJSONString(products, SerializerFeature.PrettyFormat));
    }
+
+   @Test
+   public void add_product_to_category() {
+      long categoryId = 15;
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+
+      String productSku = "B202-SKU";
+      boolean added = client.categories().addProductToCategory(categoryId, productSku, 1);
+      logger.info("added ? {}", added);
+   }
+
+   @Test
+   public void delete_product_from_category(){
+      long categoryId = 15;
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+
+      String productSku = "B202-SKU";
+      boolean removed = client.categories().removeProductFromCategory(categoryId, productSku);
+      logger.info("removed ? {}", removed);
+   }
+
 }
