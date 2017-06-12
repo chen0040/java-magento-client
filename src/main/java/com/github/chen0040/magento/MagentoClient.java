@@ -7,7 +7,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.models.Account;
 import com.github.chen0040.magento.models.Product;
 import com.github.chen0040.magento.models.ProductPage;
-import com.github.chen0040.magento.models.ProductType;
+import com.github.chen0040.magento.models.MagentoType;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -129,20 +129,20 @@ public class MagentoClient implements Serializable {
       return getSecured(uri);
    }
 
-   public List<ProductType> listProductTypes() {
+   public List<MagentoType> listProductTypes() {
       String uri = baseUri + "/rest/V1/products/types"
               + "?searchCriteria[currentPage]=0"
               + "&searchCriteria[pageSize]=1000";
       String json = getSecured(uri);
-      return JSON.parseArray(json, ProductType.class);
+      return JSON.parseArray(json, MagentoType.class);
    }
 
-   public List<ProductType> listProductTypes(int page, int pageSize) {
+   public List<MagentoType> listProductTypes(int page, int pageSize) {
       String uri = baseUri + "/rest/V1/products/types"
               + "?searchCriteria[currentPage]=" + page
               + "&searchCriteria[pageSize]=" + pageSize;
       String json = getSecured(uri);
-      return JSON.parseArray(json, ProductType.class);
+      return JSON.parseArray(json, MagentoType.class);
    }
 
    public String getSecured(String uri) {

@@ -9,6 +9,8 @@ As Magento2 by default enable a feature preventing anonymous access to most of t
 
 # Usage
 
+### Customer Login
+
 The sample code below shows how to login to magento site and retrieve the current login account information:
 
 ```java
@@ -17,9 +19,10 @@ String username = "chen0040@change.me";
 String password = "password";
 MagentoClient client = new MagentoClient(magento_site_url);
 String token = client.loginAsClient(username, password);
-logger.info("my account: {}", client.getMyAccount());
+Account myAccount = client.getMyAccount();
 ```
 
+### Admin Login
 
 The sample code below shows how to login to magento site as the administrator and retrieve the admin login account information:
 
@@ -29,7 +32,40 @@ String username = "admin";
 String password = "admin-password";
 MagentoClient client = new MagentoClient(magento_site_url);
 String token = client.loginAsAdmin(username, password);
-logger.info("account with id 1: {}", client.getAccountById(1));
+Account account = client.getAccountById(1);
+```
+
+### Product Management (Admin)
+
+The sample code below shows how to list products, get/add/update/delete a particular product by its sku
+ 
+```java
+MagentoClient client = new MagentoClient(magento_site_url);
+client.loginAsAdmin(username, password);
+
+int pageIndex = 0;
+int pageSize = 10;
+client.listProducts(pageIndex, pageSize);
+
+// check if product by sku exists
+boolean exists = client.hasProduct(sku);
+
+// get product detail 
+Product product = client.getProductBySku(sku);
+
+// create or update a product 
+Product newProduct = new Product();
+newProduct.setSku("B203-SKU");
+newProduct.setName("B203");
+newProduct.setPrice(30.00);
+newProduct.setStatus(1);
+newProduct.setType_id("simple");
+newProduct.setAttribute_set_id(4);
+newProduct.setWeight(1);
+Product saveProduct = client.addProduct(newProduct);
+
+// delete a product
+client.deleteProduct(sku);
 ```
 
 # Notes

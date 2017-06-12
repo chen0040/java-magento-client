@@ -25,9 +25,9 @@ public class Product {
    private String created_at = "2017-05-03 03:46:13";
    private String updated_at = "2017-05-03 03:46:13";
    private double weight = 1;
-   private List<Attribute> extension_attributes = new ArrayList<>();
+   private List<MagentoAttribute> extension_attributes = new ArrayList<>();
    private List<String> product_links = new ArrayList<>();
    private List<Double> tier_prices = new ArrayList<>();
-   private List<Attribute> custom_attributes = new ArrayList<>();
+   private List<MagentoAttribute> custom_attributes = new ArrayList<>();
 
 }

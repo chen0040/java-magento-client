@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ProductType {
+public class MagentoType {
    private String name = "simple";
    private String label ="Simple Product";
 }
