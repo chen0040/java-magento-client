@@ -1,4 +1,4 @@
-package com.github.chen0040.magento;
+package com.github.chen0040.magento.utils;
 
 
 /**

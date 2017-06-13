@@ -2,10 +2,14 @@ package com.github.chen0040.magento;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.models.*;
+import com.github.chen0040.magento.services.MagentoInventoryStockManager;
+import com.github.chen0040.magento.services.MagentoCategoryManager;
+import com.github.chen0040.magento.services.MagentoHttpComponent;
+import com.github.chen0040.magento.services.MagentoProductManager;
+import com.github.chen0040.magento.utils.HttpClient;
+import com.github.chen0040.magento.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -13,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -42,11 +45,13 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
 
    private MagentoProductManager products;
    private MagentoCategoryManager categories;
+   private MagentoInventoryStockManager inventory;
 
    public MagentoClient(String baseUri) {
       this.baseUri = baseUri;
       this.products = new MagentoProductManager(this);
       this.categories = new MagentoCategoryManager(this);
+      this.inventory = new MagentoInventoryStockManager(this);
    }
 
    public Account getMyAccount() {
@@ -112,6 +117,9 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       return products;
    }
 
+   public MagentoInventoryStockManager inventory() {
+      return inventory;
+   }
 
 
    @Override public String token() {
