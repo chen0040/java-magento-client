@@ -6,7 +6,7 @@
 
     <groupId>com.github.chen0040</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 
 
 
@@ -502,12 +502,6 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
             <version>${lombok.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math3</artifactId>
-            <version>${commons-math.version}</version>
         </dependency>
 
         <dependency>

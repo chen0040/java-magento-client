@@ -1,6 +1,18 @@
 # java-magento-client
 Java client for communicating with Magento2 site
 
+# Install
+
+Add the following dependency to your POM file:
+
+```xml
+<dependency>
+    <groupId>com.github.chen0040</groupId>
+    <artifactId>java-magento-client</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+
 # Features
 
 The java client provides access to web apis as listed in [link](http://devdocs.magento.com/swagger/index.html) and [link2](http://devdocs.magento.com/guides/v2.0/rest/list.html) currently available for Magent 2.16.
