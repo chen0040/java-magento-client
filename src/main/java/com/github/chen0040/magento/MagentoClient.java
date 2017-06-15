@@ -4,10 +4,7 @@ package com.github.chen0040.magento;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.models.*;
-import com.github.chen0040.magento.services.MagentoInventoryStockManager;
-import com.github.chen0040.magento.services.MagentoCategoryManager;
-import com.github.chen0040.magento.services.MagentoHttpComponent;
-import com.github.chen0040.magento.services.MagentoProductManager;
+import com.github.chen0040.magento.services.*;
 import com.github.chen0040.magento.utils.HttpClient;
 import com.github.chen0040.magento.utils.StringUtils;
 import lombok.Getter;
@@ -46,12 +43,14 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
    private MagentoProductManager products;
    private MagentoCategoryManager categories;
    private MagentoInventoryStockManager inventory;
+   private MagentoProductMediaManager media;
 
    public MagentoClient(String baseUri) {
       this.baseUri = baseUri;
       this.products = new MagentoProductManager(this);
       this.categories = new MagentoCategoryManager(this);
       this.inventory = new MagentoInventoryStockManager(this);
+      this.media = new MagentoProductMediaManager(this);
    }
 
    public Account getMyAccount() {
@@ -120,6 +119,8 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
    public MagentoInventoryStockManager inventory() {
       return inventory;
    }
+
+   public MagentoProductMediaManager media() {return media;}
 
 
    @Override public String token() {

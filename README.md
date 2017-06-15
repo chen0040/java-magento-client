@@ -95,8 +95,13 @@ The sample code below shows how to list the media associated with a particular p
 
 ```java
 String productSku = "B202-SKU";
-List<ProductMedia> mediaList = client.products().getProductMediaList(productSku);
+List<ProductMedia> mediaList = client.media().getProductMediaList(productSku);
+
+// below returns a list of absoluate/relative urls for the media (e.g. images) associated with the product
+List<String> imageUrls = client.media().getProductMediaAbsoluteUrls(productSku);
+List<String> imageUrls = client.media().getProductMediaRelativeUrls(productSku);
 ```
+
 
 The sample code below shows how to obtain a particular media associated with a product:
 
@@ -104,7 +109,11 @@ The sample code below shows how to obtain a particular media associated with a p
 String productSku = "B202-SKU";
 long entryId = 1L;
 
-ProductMedia media = client.products().getProductMedia(productSku, entryId);
+ProductMedia media = client.media().getProductMedia(productSku, entryId);
+
+// below returns a list of absoluate/relative urls for the media (e.g. images) associated with the product
+String imageUrl = client.media().getProductMediaAbsoluteUrl(productSku, entryId);
+String imageUrl = client.media().getProductMediaRelativeUrl(productSku, entryId);
 ```
 
 The sample code below shows how to upload an image for a particular product:
@@ -124,7 +133,7 @@ while((length = inputStream.read(bytes, 0, 1024)) > 0) {
  baos.write(bytes, 0, length);
 }
 bytes = baos.toByteArray();
-long uploadedEntryId = client.products().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName);
+long uploadedEntryId = client.media().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName);
 ```
 
 The sample code below shows how to update an image media for a particular product:
@@ -145,7 +154,7 @@ while((length = inputStream.read(bytes, 0, 1024)) > 0) {
 }
 bytes = baos.toByteArray();
 long entryId = 1L;
-boolean updated = client.products().updateProductImage(productSku, entryId, position, filename,  bytes, type, imageFileName);
+boolean updated = client.media().updateProductImage(productSku, entryId, position, filename,  bytes, type, imageFileName);
 ```
 
 ### Category Management
