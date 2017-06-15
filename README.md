@@ -15,12 +15,14 @@ Add the following dependency to your POM file:
 
 # Features
 
-* Support for V1 rest api at the current version of Magento which is Magento2 version 2.16 with token based authentication
-* Product (CRUD)
-* Product Media (CRUD)
-* Product StockItems (RU)
-* Category (RUD)
-* Account (R)
+* Support for token based authentication (ideal for Android or Spring application)
+* Support for V1 rest api at the current version of Magento which is Magento2 version 2.16
+* Allow access to:
+    * Product (CRUD)
+    * Product Media (CRUD)
+    * Product Inventory (RU)
+    * Product Categories (RUD)
+    * Account (R)
 
 
 The java client provides access to web apis as listed in [link](http://devdocs.magento.com/swagger/index.html) and [link2](http://devdocs.magento.com/guides/v2.0/rest/list.html) currently available for Magent 2.16.
@@ -170,7 +172,7 @@ long entryId = 1L; // entry id of the media to be deleted
 boolean deleted = client.media().deleteProductMedia(productSku, entryId);
 ```
 
-### Category Management
+### Product Categories
 
 The sample code below show how to list categories, get a particular category, or list/add/remove products under a category
  
@@ -198,7 +200,7 @@ boolean added = client.categories().addProductToCategory(categoryId, productSku,
 boolean removed = client.categories().removeProductFromCategory(categoryId, productSku);
 ```
 
-### Inventory Management 
+### Product Inventory 
 
 The sample code below shows how to obtain and update the inventory information for a particular product sku:
  
