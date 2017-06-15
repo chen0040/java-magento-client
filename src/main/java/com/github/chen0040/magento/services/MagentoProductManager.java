@@ -5,9 +5,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.*;
+import com.github.chen0040.magento.utils.StringUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +63,63 @@ public class MagentoProductManager extends MagentoHttpComponent {
       }
 
       return JSON.parseObject(json, Product.class);
+   }
+
+   public long uploadProductImage(String sku, int position, String filename, byte[] imageBytes, String imageType, String imageFileName) {
+
+      try {
+         String base64EncodedData = new String(Base64.encodeBase64(imageBytes), "UTF-8");
+         return uploadProductImage(sku, position, filename, base64EncodedData, imageType, imageFileName);
+      }
+      catch (UnsupportedEncodingException e) {
+         logger.error("Failed to covert image bytes to base64 string", e);
+      }
+      return -1L;
+   }
+
+   public long uploadProductImage(String sku, int position, String filename, String base64EncodedData, String imageType, String imageFileName) {
+      String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
+
+      Map<String, Object> req = new HashMap<>();
+      Map<String, Object> entry = new HashMap<>();
+
+      entry.put("media_type", "image");
+      entry.put("label", "Image");
+     entry.put("position", position);
+     entry.put("disabled", false);
+     List<String> types = Arrays.asList("image",
+             "small_image",
+             "thumbnail");
+     entry.put("types", types);
+     entry.put("file", filename);
+     Map<String,Object> content = new HashMap<>();
+     entry.put("content", content);
+     content.put("base64EncodedData", base64EncodedData);
+     content.put("type", imageType);
+     content.put("name", imageFileName);
+
+
+
+      req.put("entry", entry);
+      String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
+      String json = postSecure(uri, body);
+
+      if(!validate(json)){
+         return -1L;
+      }
+      return Long.parseLong(StringUtils.stripQuotation(json));
+   }
+
+   public List<ProductMedia> getProductMediaList(String sku) {
+      String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
+
+      String json = getSecured(uri);
+
+      if(!validate(json)) {
+         return null;
+      }
+
+      return JSON.parseArray(json, ProductMedia.class);
    }
 
    public List<MagentoAttributeType> getProductAttributeTypes() {

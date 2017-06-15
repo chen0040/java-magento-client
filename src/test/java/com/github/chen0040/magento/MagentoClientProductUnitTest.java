@@ -8,6 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 
@@ -76,6 +79,38 @@ public class MagentoClientProductUnitTest {
       newProduct.setWeight(1);
 
       logger.info("add product result: {}", JSON.toJSONString(client.products().addProduct(newProduct), SerializerFeature.PrettyFormat));
+   }
+
+   @Test
+   public void test_get_product_media() {
+      String productSku = "B202-SKU";
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+      logger.info("mediate list: \r\n{}", JSON.toJSONString(client.products().getProductMediaList(productSku), SerializerFeature.PrettyFormat));
+   }
+
+   @Test
+   public void test_upload_image() throws IOException {
+      String productSku = "B202-SKU";
+
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+
+      String filename = "/m/b/mb01-blue-0.png";
+      int position = 1;
+      String type = "image/png";
+      String imageFileName = "new_image.png";
+
+      InputStream inputStream = MagentoClientProductUnitTest.class.getClassLoader().getResourceAsStream("sample.png");
+
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      int length;
+      byte[] bytes = new byte[1024];
+      while((length = inputStream.read(bytes, 0, 1024)) > 0) {
+         baos.write(bytes, 0, length);
+      }
+      bytes = baos.toByteArray();
+      logger.info("uploaded image id: {}", client.products().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName));
    }
 
    @Test
