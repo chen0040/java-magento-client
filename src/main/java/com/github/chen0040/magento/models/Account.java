@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -16,8 +17,8 @@ import java.util.List;
 public class Account {
    private long id = 21;
    private long group_id = 1;
-   private String created_at = "2017-06-12 07:58:16";
-   private String updated_at = "2017-06-12 07:58:19";
+   private Date created_at;
+   private Date updated_at;
    private String created_in = "Store view 1 - website_id_1 - group_id_1";
    private String email = "xs0040@gmail.com";
    private String firstname = "Xianshun";

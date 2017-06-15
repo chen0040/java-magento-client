@@ -1,7 +1,9 @@
 package com.github.chen0040.magento.services;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.StockItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,5 +27,15 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 
    @Override public String baseUri() {
       return client.baseUri();
+   }
+
+   public StockItems getStockItems(String productSku) {
+      String url = baseUri() + "/" +relativePath4InventoryStock + "/" + productSku;
+      String json = getSecured(url);
+      if(!validate(json)){
+         return null;
+      }
+      StockItems result = JSON.parseObject(json, StockItems.class);
+      return result;
    }
 }

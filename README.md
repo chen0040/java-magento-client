@@ -108,6 +108,17 @@ boolean added = client.categories().addProductToCategory(categoryId, productSku,
 boolean removed = client.categories().removeProductFromCategory(categoryId, productSku);
 ```
 
+### Inventory Management 
+
+The sample code below shows how to obtain and update the inventory information for a particular product sku:
+ 
+```java
+MagentoClient client = new MagentoClient(magento_site_url);
+client.loginAsAdmin(username, password);
+String productSku = "product_dynamic_571";
+StockItems inventory_for_sku = client.inventory().getStockItems(productSku);
+```
+
 # Notes
 
 * http://devdocs.magento.com/guides/v2.1/howdoi/webapi/search-criteria.html
