@@ -117,6 +117,10 @@ MagentoClient client = new MagentoClient(magento_site_url);
 client.loginAsAdmin(username, password);
 String productSku = "product_dynamic_571";
 StockItems inventory_for_sku = client.inventory().getStockItems(productSku);
+
+// to update the inventory for the product
+inventory_for_sku.setQty(10);
+String stockId = client.inventory().saveStockItems(productSku, inventory_for_sku);
 ```
 
 # Notes
