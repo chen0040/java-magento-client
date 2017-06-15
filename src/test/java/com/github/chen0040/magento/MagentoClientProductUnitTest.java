@@ -82,11 +82,20 @@ public class MagentoClientProductUnitTest {
    }
 
    @Test
+   public void test_get_product_media_list() {
+      String productSku = "B202-SKU";
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+      logger.info("media list: \r\n{}", JSON.toJSONString(client.products().getProductMediaList(productSku), SerializerFeature.PrettyFormat));
+   }
+
+   @Test
    public void test_get_product_media() {
       String productSku = "B202-SKU";
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
-      logger.info("mediate list: \r\n{}", JSON.toJSONString(client.products().getProductMediaList(productSku), SerializerFeature.PrettyFormat));
+      long entryId = 3L;
+      logger.info("media: \r\n{}", JSON.toJSONString(client.products().getProductMedia(productSku, entryId), SerializerFeature.PrettyFormat));
    }
 
    @Test

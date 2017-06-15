@@ -26,7 +26,9 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       this.client = client;
    }
 
-   public Category page(int pageIndex, int pageSize) {
+   public Category all() {
+      int pageIndex = 0;
+      int pageSize = 1000;
       String uri = baseUri() + "/" + relativePath4Categories
               + "?searchCriteria[currentPage]=" + pageIndex
               + "&searchCriteria[pageSize]=" + pageSize;
@@ -38,7 +40,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       return JSON.parseObject(json, Category.class);
    }
 
-   public Category getCategoryById(long id) {
+   public Category getCategoryByIdClean(long id) {
       String uri = baseUri() + "/" + relativePath4Categories + "/" + id;
       String json = getSecured(uri);
       if(!validate(json)){
@@ -46,6 +48,24 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       }
 
       return JSON.parseObject(json, Category.class);
+   }
+
+   public Category getCategoryByIdWithChildren(long id) {
+      Category all = all();
+      return getCategoryById(all, id);
+   }
+
+   private Category getCategoryById(Category x, long id){
+      if(x.getId() == id) {
+         return x;
+      }
+      for(Category child : x.getChildren_data()) {
+         Category x_ = getCategoryById(child, id);
+         if(x_ != null) {
+            return x_;
+         }
+      }
+      return null;
    }
 
    public List<CategoryProduct> getProductsInCategory(long id) {

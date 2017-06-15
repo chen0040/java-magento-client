@@ -94,7 +94,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
      entry.put("file", filename);
      Map<String,Object> content = new HashMap<>();
      entry.put("content", content);
-     content.put("base64EncodedData", base64EncodedData);
+     content.put("base64_encoded_data", base64EncodedData);
      content.put("type", imageType);
      content.put("name", imageFileName);
 
@@ -120,6 +120,19 @@ public class MagentoProductManager extends MagentoHttpComponent {
       }
 
       return JSON.parseArray(json, ProductMedia.class);
+   }
+
+   public ProductMedia getProductMedia(String sku, long entryId){
+
+      String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+
+      String json = getSecured(uri);
+
+      if(!validate(json)) {
+         return null;
+      }
+
+      return JSON.parseObject(json, ProductMedia.class);
    }
 
    public List<MagentoAttributeType> getProductAttributeTypes() {

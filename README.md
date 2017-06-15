@@ -89,6 +89,44 @@ Product saveProduct = client.products().addProduct(newProduct);
 client.products().deleteProduct(sku);
 ```
 
+### Product Media
+
+The sample code below shows how to list the media associated with a particular product:
+
+```java
+String productSku = "B202-SKU";
+List<ProductMedia> mediaList = client.products().getProductMediaList(productSku);
+```
+
+The sample code below shows how to obtain a particular media associated with a product:
+
+```java
+String productSku = "B202-SKU";
+long entryId = 1L;
+
+ProductMedia media = client.products().getProductMedia(productSku, entryId);
+```
+
+The sample code below shows how to upload an image for a particular product:
+
+```java
+String filename = "/m/b/mb01-blue-0.png";
+int position = 1;
+String type = "image/png";
+String imageFileName = "new_image.png";
+
+InputStream inputStream = new FileInputStream(imageFileName);
+
+ByteArrayOutputStream baos = new ByteArrayOutputStream();
+int length;
+byte[] bytes = new byte[1024];
+while((length = inputStream.read(bytes, 0, 1024)) > 0) {
+ baos.write(bytes, 0, length);
+}
+bytes = baos.toByteArray();
+long uploadedImageId = client.products().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName);
+```
+
 ### Category Management
 
 The sample code below show how to list categories, get a particular category, or list/add/remove products under a category
@@ -98,10 +136,11 @@ MagentoClient client = new MagentoClient(magento_site_url);
 client.loginAsAdmin(username, password);
 
 // list categories
-Category page = client.categories().page(0, 10);
+Category page = client.categories().all();
 
-// get the category that has id = 15
-Category category15 = client.categories().getCategoryById(15);
+// get the category that has category_id = 15 (Clean means no children of that category will be returned)
+Category category15 = client.categories().getCategoryByIdClean(15);
+Category category15 = client.categories().getCategoryByIdWithChildren(15);
 
 // list products under category 15
 List<CategoryProduct> products = client.categories().getProductsInCategory(15);

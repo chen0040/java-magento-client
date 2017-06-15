@@ -25,7 +25,10 @@ public class MagentoClientCategoryUnitTest {
 
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
-      Category category = client.categories().getCategoryById(id);
+      Category category = client.categories().getCategoryByIdClean(id);
+      logger.info("category:\r\n{}", JSON.toJSONString(category, SerializerFeature.PrettyFormat));
+
+      category = client.categories().getCategoryByIdWithChildren(id);
       logger.info("category:\r\n{}", JSON.toJSONString(category, SerializerFeature.PrettyFormat));
    }
 
@@ -34,7 +37,7 @@ public class MagentoClientCategoryUnitTest {
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
 
-      Category page = client.categories().page(0, 10);
+      Category page = client.categories().all();
       logger.info("categories: {}\r\n", JSON.toJSONString(page, SerializerFeature.PrettyFormat));
    }
 
