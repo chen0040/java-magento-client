@@ -154,6 +154,19 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
       return JSON.parseObject(json, ProductMedia.class);
    }
 
+   public boolean deleteProductMedia(String sku, long entryId){
+
+      String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+
+      String json = deleteSecure(uri);
+
+      if(!validate(json)) {
+         return false;
+      }
+
+      return json.equalsIgnoreCase("true");
+   }
+
    public String getProductMediaAbsoluteUrl(String sku, long entryId) {
       ProductMedia media = getProductMedia(sku, entryId);
       String filename = media.getFile();

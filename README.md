@@ -102,6 +102,7 @@ List<String> imageUrls = client.media().getProductMediaAbsoluteUrls(productSku);
 List<String> imageUrls = client.media().getProductMediaRelativeUrls(productSku);
 ```
 
+In the above code,the entry id of a product media associated with the product can be obtained by calling the ProductMedia.getId() api.
 
 The sample code below shows how to obtain a particular media associated with a product:
 
@@ -119,6 +120,7 @@ String imageUrl = client.media().getProductMediaRelativeUrl(productSku, entryId)
 The sample code below shows how to upload an image for a particular product:
 
 ```java
+String productSku = "B202-SKU";
 String filename = "/m/b/mb01-blue-0.png";
 int position = 1;
 String type = "image/png";
@@ -136,9 +138,12 @@ bytes = baos.toByteArray();
 long uploadedEntryId = client.media().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName);
 ```
 
+The uploadedEntryId returned is the entry id created for the newly uploaded image.
+
 The sample code below shows how to update an image media for a particular product:
 
 ```java
+String productSku = "B202-SKU";
 String filename = "/m/b/mb01-blue-0.png";
 int position = 1;
 String type = "image/png";
@@ -153,8 +158,16 @@ while((length = inputStream.read(bytes, 0, 1024)) > 0) {
  baos.write(bytes, 0, length);
 }
 bytes = baos.toByteArray();
-long entryId = 1L;
+long entryId = 1L; // entry id of the media to be updated
 boolean updated = client.media().updateProductImage(productSku, entryId, position, filename,  bytes, type, imageFileName);
+```
+
+The sample code below shows how to delete an image or a video associated with a particular product:
+
+```java
+String productSku = "B202-SKU";
+long entryId = 1L; // entry id of the media to be deleted
+boolean deleted = client.media().deleteProductMedia(productSku, entryId);
 ```
 
 ### Category Management

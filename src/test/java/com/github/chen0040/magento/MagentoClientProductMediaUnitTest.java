@@ -75,6 +75,15 @@ public class MagentoClientProductMediaUnitTest {
    }
 
    @Test
+   public void test_delete_product_media() {
+      String productSku = "B202-SKU";
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+      long entryId = 2L;
+      logger.info("media deleted: \r\n{}", JSON.toJSONString(client.media().deleteProductMedia(productSku, entryId), SerializerFeature.PrettyFormat));
+   }
+
+   @Test
    public void test_upload_image() throws IOException {
       String productSku = "B202-SKU";
 
