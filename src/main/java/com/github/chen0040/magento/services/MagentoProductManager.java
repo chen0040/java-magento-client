@@ -77,6 +77,53 @@ public class MagentoProductManager extends MagentoHttpComponent {
       return -1L;
    }
 
+   public boolean updateProductImage(String sku, long entryId, int position, String filename, byte[] imageBytes, String imageType, String imageFileName) {
+
+      try {
+         String base64EncodedData = new String(Base64.encodeBase64(imageBytes), "UTF-8");
+         return updateProductImage(sku, entryId, position, filename, base64EncodedData, imageType, imageFileName);
+      }
+      catch (UnsupportedEncodingException e) {
+         logger.error("Failed to covert image bytes to base64 string", e);
+      }
+      return false;
+   }
+
+   public boolean updateProductImage(String sku, long entryId, int position, String filename, String base64EncodedData, String imageType, String imageFileName) {
+      String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+
+      Map<String, Object> req = new HashMap<>();
+      Map<String, Object> entry = new HashMap<>();
+
+      entry.put("media_type", "image");
+      entry.put("id", entryId);
+      entry.put("label", "Image");
+      entry.put("position", position);
+      entry.put("disabled", false);
+      List<String> types = Arrays.asList("image",
+              "small_image",
+              "thumbnail");
+      entry.put("types", types);
+      entry.put("file", filename);
+      Map<String,Object> content = new HashMap<>();
+
+      content.put("base64_encoded_data", base64EncodedData);
+      content.put("type", imageType);
+      content.put("name", imageFileName);
+
+      entry.put("content", content);
+
+
+      req.put("entry", entry);
+      String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
+      String json = putSecure(uri, body);
+
+      if(!validate(json)){
+         return false;
+      }
+      return json.equalsIgnoreCase("true");
+   }
+
    public long uploadProductImage(String sku, int position, String filename, String base64EncodedData, String imageType, String imageFileName) {
       String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
 
@@ -93,11 +140,12 @@ public class MagentoProductManager extends MagentoHttpComponent {
      entry.put("types", types);
      entry.put("file", filename);
      Map<String,Object> content = new HashMap<>();
-     entry.put("content", content);
+
      content.put("base64_encoded_data", base64EncodedData);
      content.put("type", imageType);
      content.put("name", imageFileName);
 
+      entry.put("content", content);
 
 
       req.put("entry", entry);

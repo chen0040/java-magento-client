@@ -124,7 +124,28 @@ while((length = inputStream.read(bytes, 0, 1024)) > 0) {
  baos.write(bytes, 0, length);
 }
 bytes = baos.toByteArray();
-long uploadedImageId = client.products().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName);
+long uploadedEntryId = client.products().uploadProductImage(productSku, position, filename,  bytes, type, imageFileName);
+```
+
+The sample code below shows how to update an image media for a particular product:
+
+```java
+String filename = "/m/b/mb01-blue-0.png";
+int position = 1;
+String type = "image/png";
+String imageFileName = "new_image.png";
+
+InputStream inputStream = new FileInputStream(imageFileName);
+
+ByteArrayOutputStream baos = new ByteArrayOutputStream();
+int length;
+byte[] bytes = new byte[1024];
+while((length = inputStream.read(bytes, 0, 1024)) > 0) {
+ baos.write(bytes, 0, length);
+}
+bytes = baos.toByteArray();
+long entryId = 1L;
+boolean updated = client.products().updateProductImage(productSku, entryId, position, filename,  bytes, type, imageFileName);
 ```
 
 ### Category Management
