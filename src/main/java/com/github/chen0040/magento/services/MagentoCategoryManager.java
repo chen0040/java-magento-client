@@ -9,6 +9,7 @@ import com.github.chen0040.magento.models.CategoryProduct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,61 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       this.client = client;
    }
 
-   public boolean deleteCaegoryById(long categoryId) {
+   public boolean deleteCategory(long categoryId) {
       String url = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
       String json = deleteSecure(url);
+      if(!validate(json)){
+         return false;
+      }
+      return json.equalsIgnoreCase("true");
+   }
+
+   public long addCategory(Category category) {
+      Map<String, Object> cat = new HashMap<>();
+      cat.put("id", category.getId());
+      cat.put("parent_id", category.getParent_id());
+     cat.put("name", category.getName());
+     cat.put("is_active", category.is_active());
+     cat.put("position", category.getPosition());
+     cat.put("level", category.getLevel());
+     cat.put("children", "string");
+      cat.put("include_in_menu", true);
+      cat.put("available_sort_by", new ArrayList<>());
+      cat.put("extension_attributes", new ArrayList<>());
+      cat.put("custom_attributes", new ArrayList<>());
+      Map<String, Object> req = new HashMap<>();
+      req.put("category", cat);
+      String url = baseUri() + "/" + relativePath4Categories;
+
+      String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
+      String json = postSecure(url, body);
+
+      if(!validate(json)){
+         return -1;
+      }
+      return Long.parseLong(json);
+   }
+
+   public boolean updateCategory(Category category) {
+      Map<String, Object> cat = new HashMap<>();
+      cat.put("id", category.getId());
+      cat.put("parent_id", category.getParent_id());
+      cat.put("name", category.getName());
+      cat.put("is_active", category.is_active());
+      cat.put("position", category.getPosition());
+      cat.put("level", category.getLevel());
+      cat.put("children", "string");
+      cat.put("include_in_menu", true);
+      cat.put("available_sort_by", new ArrayList<>());
+      cat.put("extension_attributes", new ArrayList<>());
+      cat.put("custom_attributes", new ArrayList<>());
+      Map<String, Object> req = new HashMap<>();
+      req.put("category", cat);
+      String url = baseUri() + "/" + relativePath4Categories + "/" + category.getId();
+
+      String body = JSON.toJSONString(req, SerializerFeature.BrowserCompatible);
+      String json = postSecure(url, body);
+
       if(!validate(json)){
          return false;
       }

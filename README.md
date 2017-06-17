@@ -174,7 +174,7 @@ boolean deleted = client.media().deleteProductMedia(productSku, entryId);
 
 ### Product Categories
 
-The sample code below show how to list categories, get a particular category, or list/add/remove products under a category
+The sample code below show how to list/add/update/delete categories, get a particular category, 
  
 ```java
 MagentoClient client = new MagentoClient(magento_site_url);
@@ -187,6 +187,19 @@ Category page = client.categories().all();
 Category category15 = client.categories().getCategoryByIdClean(15);
 Category category15 = client.categories().getCategoryByIdWithChildren(15);
 
+// delete category with category id = 15
+client.categories().deleteCategory(15);
+
+Category newCategory = ...
+client.categories().addCategory(newCategory);
+
+newCategory.setName("New Category Name");
+client.categories().updateCategory(newCategory);
+```
+
+The sample code below show how to list/add/remove products under a category:
+
+```java
 // list products under category 15
 List<CategoryProduct> products = client.categories().getProductsInCategory(15);
 

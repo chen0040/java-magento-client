@@ -38,7 +38,7 @@ public class MagentoClientCategoryUnitTest {
 
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
-      boolean deleted = client.categories().deleteCaegoryById(id);
+      boolean deleted = client.categories().deleteCategory(id);
       logger.info("category deleted: {}", deleted);
    }
 
