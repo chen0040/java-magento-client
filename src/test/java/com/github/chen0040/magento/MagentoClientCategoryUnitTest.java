@@ -33,6 +33,16 @@ public class MagentoClientCategoryUnitTest {
    }
 
    @Test
+   public void test_delete_category_by_id(){
+      long id = 15;
+
+      MagentoClient client = new MagentoClient(Mediator.url);
+      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
+      boolean deleted = client.categories().deleteCaegoryById(id);
+      logger.info("category deleted: {}", deleted);
+   }
+
+   @Test
    public void test_list_categories() {
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);

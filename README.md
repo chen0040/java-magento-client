@@ -21,7 +21,7 @@ Add the following dependency to your POM file:
     * Product (CRUD)
     * Product Media (CRUD)
     * Product Inventory (RU)
-    * Product Categories (RUD)
+    * Product Categories (CRUD)
     * Account (R)
 
 

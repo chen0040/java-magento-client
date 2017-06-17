@@ -26,6 +26,15 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
       this.client = client;
    }
 
+   public boolean deleteCaegoryById(long categoryId) {
+      String url = baseUri() + "/" + relativePath4Categories + "/" + categoryId;
+      String json = deleteSecure(url);
+      if(!validate(json)){
+         return false;
+      }
+      return json.equalsIgnoreCase("true");
+   }
+
    public Category all() {
       int pageIndex = 0;
       int pageSize = 1000;
