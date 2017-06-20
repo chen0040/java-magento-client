@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -60,8 +61,10 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
       return false;
    }
 
+
+
    public boolean updateProductImage(String sku, long entryId, int position, String filename, String base64EncodedData, String imageType, String imageFileName) {
-      String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+      String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 
       Map<String, Object> req = new HashMap<>();
       Map<String, Object> entry = new HashMap<>();
@@ -96,7 +99,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
    }
 
    public long uploadProductImage(String sku, int position, String filename, String base64EncodedData, String imageType, String imageFileName) {
-      String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
+      String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media";
 
       Map<String, Object> req = new HashMap<>();
       Map<String, Object> entry = new HashMap<>();
@@ -130,7 +133,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
    }
 
    public List<ProductMedia> getProductMediaList(String sku) {
-      String uri = baseUri() + "/rest/V1/products/" + sku + "/media";
+      String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media";
 
       String json = getSecured(uri);
 
@@ -143,7 +146,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 
    public ProductMedia getProductMedia(String sku, long entryId){
 
-      String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+      String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 
       String json = getSecured(uri);
 
@@ -156,7 +159,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 
    public boolean deleteProductMedia(String sku, long entryId){
 
-      String uri = baseUri() + "/rest/V1/products/" + sku + "/media/" + entryId;
+      String uri = baseUri() + "/rest/V1/products/" + escape(sku) + "/media/" + entryId;
 
       String json = deleteSecure(uri);
 

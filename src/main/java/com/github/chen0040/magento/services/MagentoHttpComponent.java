@@ -5,9 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 import com.github.chen0040.magento.utils.HttpClient;
+import com.github.chen0040.magento.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,30 +26,49 @@ public abstract class MagentoHttpComponent {
 
    public String postSecure(String url, String body){
       Map<String, String> headers = new HashMap<>();
-      headers.put("Authorization", "Bearer " + this.token());
+      if(!StringUtils.isEmpty(this.token())) {
+         headers.put("Authorization", "Bearer " + this.token());
+      }
       headers.put("Content-Type", "application/json");
       return HttpClient.post(url, body, headers);
    }
 
    public String putSecure(String url, String body) {
       Map<String, String> headers = new HashMap<>();
-      headers.put("Authorization", "Bearer " + this.token());
+      if(!StringUtils.isEmpty(this.token())) {
+         headers.put("Authorization", "Bearer " + this.token());
+      }
       headers.put("Content-Type", "application/json");
       return HttpClient.put(url, body, headers);
    }
 
    public String deleteSecure(String url) {
       Map<String, String> headers = new HashMap<>();
-      headers.put("Authorization", "Bearer " + this.token());
+      if(!StringUtils.isEmpty(this.token())) {
+         headers.put("Authorization", "Bearer " + this.token());
+      }
       headers.put("Content-Type", "application/json");
       return HttpClient.delete(url, headers);
    }
 
    public String getSecured(String uri) {
       Map<String, String> headers = new HashMap<>();
-      headers.put("Authorization", "Bearer " + this.token());
+      if(!StringUtils.isEmpty(this.token())) {
+         headers.put("Authorization", "Bearer " + this.token());
+      }
       headers.put("Content-Type", "application/json");
       return HttpClient.get(uri, headers);
+   }
+
+   public String escape(String text) {
+      String result = text;
+      try{
+         result = URLEncoder.encode(text, "UTF-8");
+      }
+      catch (UnsupportedEncodingException e) {
+         logger.error("Failed to escape " + text, e);
+      }
+      return result;
    }
 
    protected boolean validate(String json) {

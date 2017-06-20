@@ -14,4 +14,8 @@ public class StringUtils {
       }
       return s;
    }
+
+   public static boolean isEmpty(String text) {
+      return text == null || text.equals("");
+   }
 }

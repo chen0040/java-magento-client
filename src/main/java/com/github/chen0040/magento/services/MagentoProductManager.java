@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +56,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
 
    public Product getProductBySku(String sku) {
-      String uri = baseUri() + "/" + relativePath4Products + "/" + sku;
+      String uri = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
       String json = getSecured(uri);
 
       if(!validate(json)){
@@ -64,6 +65,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
       return JSON.parseObject(json, Product.class);
    }
+
+
 
 
 
@@ -100,7 +103,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
    public Product addProduct(Product product){
       String sku = product.getSku();
-      String url = baseUri() + "/" + relativePath4Products + "/" + sku;
+      String url = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
 
       Map<String, Object> detail = new HashMap<>();
 
@@ -152,7 +155,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
    }
 
    public String deleteProduct(String sku) {
-      String url = baseUri() + "/" + relativePath4Products + "/" + sku;
+      String url = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
       return deleteSecure(url);
    }
 

@@ -46,7 +46,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
 
    public String saveStockItems(String productSku, StockItems si){
 
-      String url = baseUri() + "/rest/V1/products/" + productSku + "/stockItems/" + si.getItem_id();
+      String url = baseUri() + "/rest/V1/products/" + escape(productSku) + "/stockItems/" + si.getItem_id();
       Map<String, Object> req = new HashMap<>();
       Map<String, Object> obj = new HashMap<>();
       obj.put("qty", si.getQty());
