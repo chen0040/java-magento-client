@@ -18,4 +18,14 @@ public class StringUtils {
    public static boolean isEmpty(String text) {
       return text == null || text.equals("");
    }
+
+   public static String cleanup(String text){
+      String[] parts = text.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase().split("\\s+");
+      StringBuilder sb = new StringBuilder();
+      for(String p : parts) {
+         sb.append(p);
+      }
+
+      return sb.toString();
+   }
 }
