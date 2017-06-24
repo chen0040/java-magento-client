@@ -310,4 +310,73 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 
       return uploadedId;
    }
+
+   public boolean updateImage(String sku, long entryId, String imageFilePath) {
+
+      ImageType imageType = imageFilePath.toLowerCase().endsWith(".png") ? ImageType.Png : ImageType.Jpeg;
+
+
+      String filename = "/m/b/mb-" + StringUtils.cleanup(sku) + ".png";
+      int position = 1;
+      String type = "image/png";
+
+      if (imageType == ImageType.Jpeg) {
+         type = "image/jpeg";
+      }
+
+      String imageName = imageFilePath;
+      if (imageFilePath.contains(File.separator)) {
+         imageName = imageFilePath.substring(imageFilePath.lastIndexOf(File.separator) + 1, imageFilePath.length());
+      }
+
+      if (imageFilePath.contains("/")) {
+         imageName = imageFilePath.substring(imageFilePath.lastIndexOf("/") + 1, imageFilePath.length());
+      }
+
+      try {
+         InputStream inputStream = new FileInputStream(imageFilePath);
+
+         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         int length;
+         byte[] bytes = new byte[1024];
+         while ((length = inputStream.read(bytes, 0, 1024)) > 0) {
+            baos.write(bytes, 0, length);
+         }
+         bytes = baos.toByteArray();
+
+         boolean updated = updateProductImage(sku, entryId, position, filename, bytes, type, imageName);
+
+         logger.info("updating {} for product {}: {}", imageFilePath, sku, updated);
+
+         return updated;
+      }
+      catch (IOException exception) {
+         logger.error("Failed to upload as image " + imageFilePath + " is not available.", exception);
+      }
+
+      return false;
+   }
+
+   public boolean updateImage(String sku, long entryId, byte[] bytes, ImageType imageType) {
+
+      String filename = "/m/b/mb-" + StringUtils.cleanup(sku) + ".png";
+      int position = 1;
+      String type = "image/png";
+
+      if (imageType == ImageType.Jpeg) {
+         type = "image/jpeg";
+      }
+
+      String imageName = filename;
+
+      if (filename.contains("/")) {
+         imageName = filename.substring(filename.lastIndexOf("/") + 1, filename.length());
+      }
+
+      boolean updated = updateProductImage(sku, entryId, position, filename, bytes, type, imageName);
+
+      logger.info("uploaded {} for product {}: {}", filename, sku, updated);
+
+      return updated;
+   }
 }

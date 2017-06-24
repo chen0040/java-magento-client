@@ -9,7 +9,7 @@ Add the following dependency to your POM file:
 <dependency>
     <groupId>com.github.chen0040</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 </dependency>
 ```
 
@@ -151,13 +151,10 @@ long uploadedEntryId = client.media().uploadImage(productSku, imageFilePath, ove
 
 The uploadedEntryId returned is the entry id created for the newly uploaded image.
 
-The sample code below shows how to update an image media for a particular product:
+The sample code below shows how to update an image media for a particular product given the bytes of the new image:
 
 ```java
 String productSku = "B202-SKU";
-String filename = "/m/b/mb01-blue-0.png";
-int position = 1;
-String type = "image/png";
 String imageFileName = "new_image.png";
 
 InputStream inputStream = new FileInputStream(imageFileName);
@@ -170,7 +167,16 @@ while((length = inputStream.read(bytes, 0, 1024)) > 0) {
 }
 bytes = baos.toByteArray();
 long entryId = 1L; // entry id of the media to be updated
-boolean updated = client.media().updateProductImage(productSku, entryId, position, filename,  bytes, type, imageFileName);
+boolean updated = client.media().updateImage(productSku, entryId, bytes, ImageType.Png);
+```
+
+The sample code below shows how to update an image media for a particular product given the file path of the new image:
+
+```java
+String productSku = "B202-SKU";
+String imageFilePath = "new_image.png";
+long entryId = 1L; // entry id of the media to be updated
+boolean updated = client.media().updateImage(productSku, entryId, imageFilePath);
 ```
 
 The sample code below shows how to delete an image or a video associated with a particular product:
