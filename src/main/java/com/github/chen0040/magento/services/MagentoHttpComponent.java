@@ -24,9 +24,17 @@ public abstract class MagentoHttpComponent {
    public abstract String token();
    public abstract String baseUri();
 
-   private HttpComponent httpComponent;
+   protected HttpComponent httpComponent;
 
    public MagentoHttpComponent(HttpComponent httpComponent){
+      this.httpComponent = httpComponent;
+   }
+
+   public HttpComponent getHttpComponent(){
+      return httpComponent;
+   }
+
+   public void setHttpComponent(HttpComponent httpComponent){
       this.httpComponent = httpComponent;
    }
 
