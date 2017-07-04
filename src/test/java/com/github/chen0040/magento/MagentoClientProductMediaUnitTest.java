@@ -21,22 +21,7 @@ public class MagentoClientProductMediaUnitTest {
    private static final Logger logger = LoggerFactory.getLogger(MagentoClientProductMediaUnitTest.class);
 
 
-   @Test
-   public void test_add_product() {
-      MagentoClient client = new MagentoClient(Mediator.url);
-      client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
 
-      Product newProduct = new Product();
-      newProduct.setSku("B203-SKU");
-      newProduct.setName("B203");
-      newProduct.setPrice(30.00);
-      newProduct.setStatus(1);
-      newProduct.setType_id("simple");
-      newProduct.setAttribute_set_id(4);
-      newProduct.setWeight(1);
-
-      logger.info("add product result: {}", JSON.toJSONString(client.products().addProduct(newProduct), SerializerFeature.PrettyFormat));
-   }
 
    @Test
    public void test_get_product_media_list() {
