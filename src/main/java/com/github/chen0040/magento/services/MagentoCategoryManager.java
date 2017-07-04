@@ -24,6 +24,7 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
    private static final Logger logger = LoggerFactory.getLogger(MagentoCategoryManager.class);
 
    public MagentoCategoryManager(MagentoClient client) {
+      super(client.getHttpComponent());
       this.client = client;
    }
 

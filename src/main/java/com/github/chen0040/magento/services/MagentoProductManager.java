@@ -28,6 +28,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
    private static final String relativePath4Products = "rest/V1/products";
 
    public MagentoProductManager(MagentoClient client) {
+      super(client.getHttpComponent());
       this.client = client;
    }
 

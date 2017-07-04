@@ -30,6 +30,7 @@ public class MagentoProductMediaManager extends MagentoHttpComponent {
 
 
    public MagentoProductMediaManager(MagentoClient client) {
+      super(client.getHttpComponent());
       this.client = client;
    }
 

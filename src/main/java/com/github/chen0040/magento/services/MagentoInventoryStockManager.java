@@ -22,6 +22,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
    private MagentoClient client;
 
    public MagentoInventoryStockManager(MagentoClient client) {
+      super(client.getHttpComponent());
       this.client = client;
    }
 

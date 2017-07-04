@@ -24,13 +24,19 @@ public abstract class MagentoHttpComponent {
    public abstract String token();
    public abstract String baseUri();
 
+   private HttpComponent httpComponent;
+
+   public MagentoHttpComponent(HttpComponent httpComponent){
+      this.httpComponent = httpComponent;
+   }
+
    public String postSecure(String url, String body){
       Map<String, String> headers = new HashMap<>();
       if(!StringUtils.isEmpty(this.token())) {
          headers.put("Authorization", "Bearer " + this.token());
       }
       headers.put("Content-Type", "application/json");
-      return HttpClient.post(url, body, headers);
+      return httpComponent.post(url, body, headers);
    }
 
    public String putSecure(String url, String body) {
@@ -39,7 +45,7 @@ public abstract class MagentoHttpComponent {
          headers.put("Authorization", "Bearer " + this.token());
       }
       headers.put("Content-Type", "application/json");
-      return HttpClient.put(url, body, headers);
+      return httpComponent.put(url, body, headers);
    }
 
    public String deleteSecure(String url) {
@@ -48,7 +54,7 @@ public abstract class MagentoHttpComponent {
          headers.put("Authorization", "Bearer " + this.token());
       }
       headers.put("Content-Type", "application/json");
-      return HttpClient.delete(url, headers);
+      return httpComponent.delete(url, headers);
    }
 
    public String getSecured(String uri) {
@@ -57,7 +63,7 @@ public abstract class MagentoHttpComponent {
          headers.put("Authorization", "Bearer " + this.token());
       }
       headers.put("Content-Type", "application/json");
-      return HttpClient.get(uri, headers);
+      return httpComponent.get(uri, headers);
    }
 
    public String escape(String text) {

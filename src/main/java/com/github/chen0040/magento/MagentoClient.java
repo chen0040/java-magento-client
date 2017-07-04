@@ -45,7 +45,21 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
    private MagentoInventoryStockManager inventory;
    private MagentoProductMediaManager media;
 
+   private HttpComponent httpComponent;
+
+   public MagentoClient(String baseUri, HttpComponent httpComponent) {
+      super(httpComponent);
+
+      this.baseUri = baseUri;
+      this.products = new MagentoProductManager(this);
+      this.categories = new MagentoCategoryManager(this);
+      this.inventory = new MagentoInventoryStockManager(this);
+      this.media = new MagentoProductMediaManager(this);
+   }
+
    public MagentoClient(String baseUri) {
+      super(new BasicHttpComponent());
+
       this.baseUri = baseUri;
       this.products = new MagentoProductManager(this);
       this.categories = new MagentoCategoryManager(this);
