@@ -101,7 +101,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       Map<String, String> data = new HashMap<>();
       data.put("username", username);
       data.put("password", password);
-      this.token = StringUtils.stripQuotation(HttpClient.jsonPost(uri, data));
+      this.token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
       if(!token.contains("Invalid login or password")){
          authenticated = true;
@@ -114,7 +114,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       Map<String, String> data = new HashMap<>();
       data.put("username", username);
       data.put("password", password);
-      token = StringUtils.stripQuotation(HttpClient.jsonPost(uri, data));
+      token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
       if(!token.contains("Invalid login or password")){
          authenticated = true;

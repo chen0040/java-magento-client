@@ -29,4 +29,9 @@ public class BasicHttpComponent implements HttpComponent {
    @Override public String get(String uri, Map<String, String> headers) {
       return HttpClient.get(uri, headers);
    }
+
+
+   @Override public String jsonPost(String uri, Map<String, String> data) {
+      return HttpClient.jsonPost(uri, data);
+   }
 }

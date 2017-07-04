@@ -15,4 +15,6 @@ public interface HttpComponent {
    String delete(String url, Map<String, String> headers);
 
    String get(String uri, Map<String, String> headers);
+
+   String jsonPost(String uri, Map<String, String> data);
 }
