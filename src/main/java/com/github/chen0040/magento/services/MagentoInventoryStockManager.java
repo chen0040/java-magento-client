@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by xschen on 12/6/2017.
  */
 public class MagentoInventoryStockManager extends MagentoHttpComponent {
-   private static final String relativePath4InventoryStock = "rest/V1/stockItems";
+   private static final String relativePath = "rest/V1/stockItems";
    private static final Logger logger = LoggerFactory.getLogger(MagentoInventoryStockManager.class);
    private MagentoClient client;
 
@@ -36,7 +36,7 @@ public class MagentoInventoryStockManager extends MagentoHttpComponent {
    }
 
    public StockItems getStockItems(String productSku) {
-      String url = baseUri() + "/" +relativePath4InventoryStock + "/" + productSku;
+      String url = baseUri() + "/" + relativePath + "/" + productSku;
       String json = getSecured(url);
       if(!validate(json)){
          return null;
