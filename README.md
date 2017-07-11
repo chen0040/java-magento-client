@@ -263,7 +263,7 @@ The sample code below shows how to create a new guest shopping cart, add/update/
 Note that creating guest shopping cart does not require login
 
 ```java
-MagentoClient client = new MagentoClient(Mediator.url);
+MagentoClient client = new MagentoClient(magento_site_url);
 String cartId = client.guestCart().newCart();
 
 CartItem item = new CartItem();
@@ -292,7 +292,7 @@ System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeatur
 The sample code belows show how to transfer a guest cart to my cart after user login:
 
 ```bash
-MagentoClient client = new MagentoClient(Mediator.url);
+MagentoClient client = new MagentoClient(magento_site_url);
 
 String cartId = client.guestCart().newCart();
 
@@ -317,7 +317,7 @@ The sample code below shows how to create my shopping cart, add/update/delete it
 Note that creating my shopping cart requires login
 
 ```java
-MagentoClient client = new MagentoClient(Mediator.url);
+MagentoClient client = new MagentoClient(magento_site_url);
 client.loginAsClient("username", "password");
 String quoteId = client.myCart().newQuote();
 
