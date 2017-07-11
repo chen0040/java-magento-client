@@ -78,13 +78,13 @@ public class MagentoClientMyCartUnitTest {
    public void test_deleteItemInCart(){
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsClient(Mediator.customerUsername, Mediator.customerPassword);
-      String cartId = client.myCart().newQuote();
+      String quoteId = client.myCart().newQuote();
 
       CartItem item = new CartItem();
       item.setQty(1);
       item.setSku("product_dynamic_758");
 
-      item = client.myCart().addItemToCart(cartId, item);
+      item = client.myCart().addItemToCart(quoteId, item);
       boolean result = client.myCart().deleteItemInCart(item.getItem_id());
 
 
@@ -96,5 +96,26 @@ public class MagentoClientMyCartUnitTest {
       logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
    }
 
+   @Test
+   public void test_transferGuestCartToMyCart(){
+      MagentoClient client = new MagentoClient(Mediator.url);
 
+      String cartId = client.guestCart().newCart();
+
+      CartItem item = new CartItem();
+      item.setQty(1);
+      item.setSku("product_dynamic_758");
+
+      item = client.guestCart().addItemToCart(cartId, item);
+
+      client.loginAsClient(Mediator.customerUsername, Mediator.customerPassword);
+      boolean result = client.myCart().transferGuestCartToMyCart(cartId);
+
+      Cart cart = client.myCart().getCart();
+      CartTotal cartTotal = client.myCart().getCartTotal();
+
+      logger.info("result: {}", result);
+      logger.info("cart: \r\n{}", JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
+      logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
+   }
 }

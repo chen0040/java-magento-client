@@ -4,6 +4,7 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
+import com.github.chen0040.magento.models.Account;
 import com.github.chen0040.magento.models.Cart;
 import com.github.chen0040.magento.models.CartItem;
 import com.github.chen0040.magento.models.CartTotal;
@@ -20,6 +21,8 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
    protected final MagentoClient client;
    private static final String relativePath = "rest/V1/carts";
    private static final String cartId = "mine";
+   private long customerId = -1L;
+   private long storeId = -1L;
 
    public MagentoMyCartManager(MagentoClient client) {
       super(client.getHttpComponent());
@@ -55,7 +58,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
          return null;
       }
 
-      System.out.println(json);
+      
 
       Cart cart = JSON.parseObject(json, Cart.class);
       return cart;
@@ -68,7 +71,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
          return null;
       }
 
-      System.out.println(json);
+      
 
       CartTotal cartTotal = JSON.parseObject(json, CartTotal.class);
       return cartTotal;
@@ -88,7 +91,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
          return null;
       }
 
-      System.out.println(json);
+      
 
       CartItem saved = JSON.parseObject(json, CartItem.class);
 
@@ -110,7 +113,7 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
          return null;
       }
 
-      System.out.println(json);
+      
 
       CartItem saved = JSON.parseObject(json, CartItem.class);
 
@@ -125,9 +128,30 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
          return false;
       }
 
-      System.out.println(json);
+      
 
       return json.equalsIgnoreCase("true");
+   }
+
+   public boolean transferGuestCartToMyCart(String guestCartId) {
+      if(customerId == -1L) {
+         Account account = client.getMyAccount();
+         customerId = account.getId();
+         storeId = account.getStore_id();
+      }
+      Map<String, Object> request = new HashMap<>();
+      request.put("customerId", customerId);
+      request.put("storeId", storeId);
+      String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
+      json = putSecure(baseUri() + "/rest/V1/guest-carts/" + guestCartId, json);
+
+      if(!validate(json)){
+         return false;
+      }
+
+      
+
+      return true;
    }
 
 }

@@ -289,6 +289,93 @@ System.out.println("cart: " + JSON.toJSONString(cart, SerializerFeature.PrettyFo
 System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
 ```
 
+The sample code belows show how to transfer a guest cart to my cart after user login:
+
+```bash
+MagentoClient client = new MagentoClient(Mediator.url);
+
+String cartId = client.guestCart().newCart();
+
+CartItem item = new CartItem();
+item.setQty(1);
+item.setSku("product_dynamic_758");
+
+item = client.guestCart().addItemToCart(cartId, item);
+
+client.loginAsClient("username", "password");
+boolean result = client.myCart().transferGuestCartToMyCart(cartId);
+
+Cart cart = client.myCart().getCart();
+CartTotal cartTotal = client.myCart().getCartTotal();
+
+```
+
+### My Shopping Cart
+
+The sample code below shows how to create my shopping cart, add/update/delete items in the shopping cart:
+
+Note that creating my shopping cart requires login
+
+```java
+MagentoClient client = new MagentoClient(Mediator.url);
+client.loginAsClient("username", "password");
+String quoteId = client.myCart().newQuote();
+
+CartItem item = new CartItem();
+item.setQty(1);
+item.setSku("product_dynamic_758");
+
+// add new item to shopping cart
+item = client.myCart().addItemToCart(quoteId, item);
+System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+
+// update item in the shopping cart
+item.setQty(3);
+item = client.myCart().updateItemInCart(quoteId, item);
+System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+
+// delete item in the shopping cart
+boolean deleted = client.myCart().deleteItemInCart(item.getItem_id());
+
+Cart cart = client.myCart().getCart();
+CartTotal cartTotal = client.myCart().getCartTotal();
+
+System.out.println("cart: " + JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
+System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
+```
+
+
+The sample code below shows how to create a new guest shopping cart, add/update/delete items in the shopping cart:
+
+Note that creating guest shopping cart does not require login
+
+```java
+MagentoClient client = new MagentoClient(Mediator.url);
+String cartId = client.guestCart().newCart();
+
+CartItem item = new CartItem();
+item.setQty(1);
+item.setSku("product_dynamic_758");
+
+// add new item to shopping cart
+item = client.guestCart().addItemToCart(cartId, item);
+System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+
+// update item in the shopping cart
+item.setQty(3);
+item = client.guestCart().updateItemInCart(cartId, item);
+System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+
+// delete item in the shopping cart
+boolean deleted = client.guestCart().deleteItemInCart(cartId, item.getItem_id());
+
+Cart cart = client.guestCart().getCart(cartId);
+CartTotal cartTotal = client.getGuestCart().getCartTotal(cartId);
+
+System.out.println("cart: " + JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
+System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
+```
+
 # Notes
 
 * http://devdocs.magento.com/guides/v2.1/howdoi/webapi/search-criteria.html
