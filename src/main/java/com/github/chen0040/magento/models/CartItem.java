@@ -14,7 +14,7 @@ import java.util.Map;
 @Setter
 @Getter
 public class CartItem {
-   private long item_id;
+   private int item_id;
    private String sku;
    private int qty;
    private String name;

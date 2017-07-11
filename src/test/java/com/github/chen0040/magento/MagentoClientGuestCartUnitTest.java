@@ -34,14 +34,32 @@ public class MagentoClientGuestCartUnitTest {
       String cartId = client.guestCart().newCart();
 
       CartItem item = new CartItem();
-      item.setName("Simple Product 758");
       item.setQty(1);
       item.setSku("product_dynamic_758");
-      item.setProduct_type("simple");
-      item.setPrice(10.0);
-      item.setQuote_id(cartId);
 
       item = client.guestCart().addItemToCart(cartId, item);
+
+
+      Cart cart = client.guestCart().getCart(cartId);
+      CartTotal cartTotal = client.getGuestCart().getCartTotal(cartId);
+
+      logger.info("cartItem: \r\n{}", JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+      logger.info("cart: \r\n{}", JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
+      logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
+   }
+
+   @Test
+   public void test_updateItemInCart(){
+      MagentoClient client = new MagentoClient(Mediator.url);
+      String cartId = client.guestCart().newCart();
+
+      CartItem item = new CartItem();
+      item.setQty(1);
+      item.setSku("product_dynamic_758");
+
+      item = client.guestCart().addItemToCart(cartId, item);
+      item.setQty(3);
+      item = client.guestCart().updateItemInCart(cartId, item);
 
 
       Cart cart = client.guestCart().getCart(cartId);
