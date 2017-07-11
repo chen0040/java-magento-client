@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class MagentoGuestCartManager extends MagentoHttpComponent {
 
-   private static final String relativePath = "rest/V1/guest-carts";
+   protected String relativePath = "rest/V1/guest-carts";
    private final MagentoClient client;
 
    public MagentoGuestCartManager(MagentoClient client){
@@ -113,6 +113,18 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       CartItem saved = JSON.parseObject(json, CartItem.class);
 
       return saved;
+   }
+
+   public boolean deleteItemInCart(String cartId, int itemId) {
+      String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
+
+      if(!validate(json)){
+         return false;
+      }
+
+      System.out.println(json);
+
+      return json.equalsIgnoreCase("true");
    }
 
 }

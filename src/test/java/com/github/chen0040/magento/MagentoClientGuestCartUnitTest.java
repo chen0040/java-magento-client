@@ -70,5 +70,26 @@ public class MagentoClientGuestCartUnitTest {
       logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
    }
 
+   @Test
+   public void test_deleteItemInCart(){
+      MagentoClient client = new MagentoClient(Mediator.url);
+      String cartId = client.guestCart().newCart();
+
+      CartItem item = new CartItem();
+      item.setQty(1);
+      item.setSku("product_dynamic_758");
+
+      item = client.guestCart().addItemToCart(cartId, item);
+      boolean result = client.guestCart().deleteItemInCart(cartId, item.getItem_id());
+
+
+      Cart cart = client.guestCart().getCart(cartId);
+      CartTotal cartTotal = client.getGuestCart().getCartTotal(cartId);
+
+      logger.info("result: {}", result);
+      logger.info("cart: \r\n{}", JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
+      logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
+   }
+
 
 }
