@@ -9,7 +9,7 @@ Add the following dependency to your POM file:
 <dependency>
     <groupId>com.github.chen0040</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
 </dependency>
 ```
 
@@ -344,37 +344,6 @@ System.out.println("cart: " + JSON.toJSONString(cart, SerializerFeature.PrettyFo
 System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
 ```
 
-
-The sample code below shows how to create a new guest shopping cart, add/update/delete items in the shopping cart:
-
-Note that creating guest shopping cart does not require login
-
-```java
-MagentoClient client = new MagentoClient(Mediator.url);
-String cartId = client.guestCart().newCart();
-
-CartItem item = new CartItem();
-item.setQty(1);
-item.setSku("product_dynamic_758");
-
-// add new item to shopping cart
-item = client.guestCart().addItemToCart(cartId, item);
-System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
-
-// update item in the shopping cart
-item.setQty(3);
-item = client.guestCart().updateItemInCart(cartId, item);
-System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
-
-// delete item in the shopping cart
-boolean deleted = client.guestCart().deleteItemInCart(cartId, item.getItem_id());
-
-Cart cart = client.guestCart().getCart(cartId);
-CartTotal cartTotal = client.getGuestCart().getCartTotal(cartId);
-
-System.out.println("cart: " + JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
-System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
-```
 
 # Notes
 
