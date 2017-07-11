@@ -4,6 +4,7 @@ package com.github.chen0040.magento.services;
 import com.alibaba.fastjson.JSON;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.Cart;
+import com.github.chen0040.magento.models.CartTotal;
 import com.github.chen0040.magento.utils.StringUtils;
 
 
@@ -51,6 +52,19 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 
       Cart cart = JSON.parseObject(json, Cart.class);
       return cart;
+   }
+
+   public CartTotal getCartTotal(String cartId) {
+      String json = getSecured(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
+
+      if(!validate(json)){
+         return null;
+      }
+
+      System.out.println(json);
+
+      CartTotal cartTotal = JSON.parseObject(json, CartTotal.class);
+      return cartTotal;
    }
 
 }
