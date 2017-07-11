@@ -2,10 +2,15 @@ package com.github.chen0040.magento.services;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.Cart;
+import com.github.chen0040.magento.models.CartItem;
 import com.github.chen0040.magento.models.CartTotal;
 import com.github.chen0040.magento.utils.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -65,6 +70,27 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 
       CartTotal cartTotal = JSON.parseObject(json, CartTotal.class);
       return cartTotal;
+   }
+
+   public CartItem addItemToCart(String cartId, CartItem item) {
+      Map<String, Map<String, Object>> request = new HashMap<>();
+      Map<String, Object> cartItem = new HashMap<>();
+      cartItem.put("qty", item.getQty());
+      cartItem.put("sku", item.getSku());
+      cartItem.put("quote_id", item.getQuote_id());
+      request.put("cartItem", cartItem);
+      String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
+      json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json);
+
+      if(!validate(json)){
+         return null;
+      }
+
+      System.out.println(json);
+
+      CartItem saved = JSON.parseObject(json, CartItem.class);
+
+      return saved;
    }
 
 }
