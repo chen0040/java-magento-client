@@ -64,15 +64,14 @@ public class MagentoClientMyCartUnitTest {
 
       item = client.myCart().addItemToCart(quoteId, item);
       item.setQty(3);
-      item = client.myCart().updateItemInCart(item);
+      item = client.myCart().updateItemInCart(quoteId, item);
 
-      /*
       Cart cart = client.myCart().getCart();
       CartTotal cartTotal = client.myCart().getCartTotal();
 
       logger.info("cartItem: \r\n{}", JSON.toJSONString(item, SerializerFeature.PrettyFormat));
       logger.info("cart: \r\n{}", JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
-      logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));*/
+      logger.info("cartTotal: \r\n{}", JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
    }
 
    @Test

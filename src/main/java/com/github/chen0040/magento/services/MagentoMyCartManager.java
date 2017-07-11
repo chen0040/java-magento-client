@@ -95,12 +95,13 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
       return saved;
    }
 
-   public CartItem updateItemInCart(CartItem item) {
+   public CartItem updateItemInCart(String quoteId, CartItem item) {
       Map<String, Map<String, Object>> request = new HashMap<>();
       Map<String, Object> cartItem = new HashMap<>();
       cartItem.put("qty", item.getQty());
       cartItem.put("sku", item.getSku());
       cartItem.put("item_id", item.getItem_id());
+      cartItem.put("quote_id", quoteId);
       request.put("cartItem", cartItem);
       String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
       json = putSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + item.getItem_id(), json);
