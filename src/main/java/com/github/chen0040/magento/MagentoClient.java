@@ -45,6 +45,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
    private MagentoInventoryStockManager inventory;
    private MagentoProductMediaManager media;
    private MagentoGuestCartManager guestCart;
+   private MagentoMyCartManager myCart;
 
    public MagentoClient(String baseUri, HttpComponent httpComponent) {
       super(httpComponent);
@@ -55,6 +56,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       this.inventory = new MagentoInventoryStockManager(this);
       this.media = new MagentoProductMediaManager(this);
       this.guestCart = new MagentoGuestCartManager(this);
+      this.myCart = new MagentoMyCartManager(this);
    }
 
    public MagentoClient(String baseUri) {
@@ -66,6 +68,7 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       this.inventory = new MagentoInventoryStockManager(this);
       this.media = new MagentoProductMediaManager(this);
       this.guestCart = new MagentoGuestCartManager(this);
+      this.myCart = new MagentoMyCartManager(this);
    }
 
    public Account getMyAccount() {
@@ -138,6 +141,8 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
    public MagentoProductMediaManager media() {return media;}
 
    public MagentoGuestCartManager guestCart() {return guestCart; }
+
+   public MagentoMyCartManager myCart() { return myCart; }
 
 
    @Override public String token() {

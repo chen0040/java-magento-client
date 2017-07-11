@@ -22,6 +22,8 @@ Add the following dependency to your POM file:
     * Product Media (CRUD)
     * Product Inventory (RU)
     * Product Categories (CRUD)
+    * Guest Shopping Cart (CRUD)
+    * My Shopping Cart (CRUD)
     * Account (R)
 
 
@@ -66,7 +68,6 @@ The sample code below shows how to list products, get/add/update/delete a partic
  
 ```java
 MagentoClient client = new MagentoClient(magento_site_url);
-client.loginAsAdmin(username, password);
 
 int pageIndex = 0;
 int pageSize = 10;
@@ -78,6 +79,9 @@ boolean exists = client.products().hasProduct(sku);
 
 // get product detail 
 Product product = client.products().getProductBySku(sku);
+
+// action below requires admin login by default
+client.loginAsAdmin(username, password);
 
 // create or update a product 
 Product newProduct = new Product();
@@ -196,7 +200,6 @@ The sample code below show how to list/add/update/delete categories, get a parti
  
 ```java
 MagentoClient client = new MagentoClient(magento_site_url);
-client.loginAsAdmin(username, password);
 
 // list categories
 Category page = client.categories().all();
@@ -204,6 +207,9 @@ Category page = client.categories().all();
 // get the category that has category_id = 15 (Clean means no children of that category will be returned)
 Category category15 = client.categories().getCategoryByIdClean(15);
 Category category15 = client.categories().getCategoryByIdWithChildren(15);
+
+// action below requires admin login by default
+client.loginAsAdmin(username, password);
 
 // delete category with category id = 15
 client.categories().deleteCategory(15);
@@ -237,13 +243,50 @@ The sample code below shows how to obtain and update the inventory information f
  
 ```java
 MagentoClient client = new MagentoClient(magento_site_url);
-client.loginAsAdmin(username, password);
+
 String productSku = "product_dynamic_571";
 StockItems inventory_for_sku = client.inventory().getStockItems(productSku);
+
+
+// action below requires admin login by default
+client.loginAsAdmin(username, password);
 
 // to update the inventory for the product
 inventory_for_sku.setQty(10);
 String stockId = client.inventory().saveStockItems(productSku, inventory_for_sku);
+```
+
+### Guest Shopping Cart
+
+The sample code below shows how to create a new guest shopping cart, add/update/delete items in the shopping cart:
+
+Note that creating guest shopping cart does not require login
+
+```java
+MagentoClient client = new MagentoClient(Mediator.url);
+String cartId = client.guestCart().newCart();
+
+CartItem item = new CartItem();
+item.setQty(1);
+item.setSku("product_dynamic_758");
+
+// add new item to shopping cart
+item = client.guestCart().addItemToCart(cartId, item);
+System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+
+// update item in the shopping cart
+item.setQty(3);
+item = client.guestCart().updateItemInCart(cartId, item);
+System.out.println("cartItem: " + JSON.toJSONString(item, SerializerFeature.PrettyFormat));
+
+// delete item in the shopping cart
+boolean deleted = client.guestCart().deleteItemInCart(cartId, item.getItem_id());
+
+Cart cart = client.guestCart().getCart(cartId);
+CartTotal cartTotal = client.getGuestCart().getCartTotal(cartId);
+
+System.out.println("cart: " + JSON.toJSONString(cart, SerializerFeature.PrettyFormat));
+System.out.println("cartTotal: " + JSON.toJSONString(cartTotal, SerializerFeature.PrettyFormat));
 ```
 
 # Notes

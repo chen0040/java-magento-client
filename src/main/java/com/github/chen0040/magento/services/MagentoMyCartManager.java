@@ -14,16 +14,19 @@ import java.util.Map;
 
 
 /**
- * Created by xschen on 10/7/2017.
+ * Created by xschen on 11/7/2017.
  */
-public class MagentoGuestCartManager extends MagentoHttpComponent {
-   protected String relativePath = "rest/V1/guest-carts";
+public class MagentoMyCartManager extends MagentoHttpComponent {
    protected final MagentoClient client;
+   private static final String relativePath = "rest/V1/carts";
+   private static final String cartId = "mine";
 
-   public MagentoGuestCartManager(MagentoClient client){
+   public MagentoMyCartManager(MagentoClient client) {
       super(client.getHttpComponent());
       this.client = client;
+
    }
+
 
    @Override public String token() {
       return client.token();
@@ -34,8 +37,8 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       return client.baseUri();
    }
 
-   public String newCart() {
-      String json = postSecure(baseUri() + "/" + relativePath, "");
+   public String newQuote() {
+      String json = postSecure(baseUri() + "/" + relativePath + "/" + cartId, "");
 
       if(!validate(json)){
          return null;
@@ -44,7 +47,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       return StringUtils.stripQuotation(json);
    }
 
-   public Cart getCart(String cartId) {
+   public Cart getCart() {
 
       String json = getSecured(baseUri() + "/" + relativePath + "/" + cartId);
 
@@ -58,7 +61,7 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       return cart;
    }
 
-   public CartTotal getCartTotal(String cartId) {
+   public CartTotal getCartTotal() {
       String json = getSecured(baseUri() + "/" + relativePath + "/" + cartId + "/totals");
 
       if(!validate(json)){
@@ -71,12 +74,12 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       return cartTotal;
    }
 
-   public CartItem addItemToCart(String cartId, CartItem item) {
+   public CartItem addItemToCart(String quoteId, CartItem item) {
       Map<String, Map<String, Object>> request = new HashMap<>();
       Map<String, Object> cartItem = new HashMap<>();
       cartItem.put("qty", item.getQty());
       cartItem.put("sku", item.getSku());
-      cartItem.put("quote_id", cartId);
+      cartItem.put("quote_id", quoteId);
       request.put("cartItem", cartItem);
       String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
       json = postSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items", json);
@@ -92,12 +95,11 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       return saved;
    }
 
-   public CartItem updateItemInCart(String cartId, CartItem item) {
+   public CartItem updateItemInCart(CartItem item) {
       Map<String, Map<String, Object>> request = new HashMap<>();
       Map<String, Object> cartItem = new HashMap<>();
       cartItem.put("qty", item.getQty());
       cartItem.put("sku", item.getSku());
-      cartItem.put("quote_id", cartId);
       cartItem.put("item_id", item.getItem_id());
       request.put("cartItem", cartItem);
       String json = JSON.toJSONString(request, SerializerFeature.BrowserCompatible);
@@ -114,7 +116,8 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
       return saved;
    }
 
-   public boolean deleteItemInCart(String cartId, int itemId) {
+   public boolean deleteItemInCart(int itemId) {
+
       String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
 
       if(!validate(json)){
@@ -125,4 +128,5 @@ public class MagentoGuestCartManager extends MagentoHttpComponent {
 
       return json.equalsIgnoreCase("true");
    }
+
 }
