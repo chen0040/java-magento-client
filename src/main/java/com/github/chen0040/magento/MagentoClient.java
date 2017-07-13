@@ -113,6 +113,13 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       return token;
    }
 
+   public void logout() {
+      //String uri = baseUri + "/rest/V1/integration/customer/revoke";
+      authenticated = false;
+      token = null;
+
+   }
+
    public String loginAsAdmin(String username, String password) {
       String uri = baseUri + "/" + relativePath4LoginAsAdmin;
       Map<String, String> data = new HashMap<>();

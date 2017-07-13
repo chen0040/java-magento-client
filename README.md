@@ -62,6 +62,14 @@ String token = client.loginAsAdmin(username, password);
 Account account = client.getAccountById(1);
 ```
 
+### Logout
+
+The line below shows how to logout:
+
+```java
+client.logout();
+```
+
 ### Product
 
 The sample code below shows how to list products, get/add/update/delete a particular product by its sku
