@@ -120,9 +120,9 @@ public class MagentoMyCartManager extends MagentoHttpComponent {
       return saved;
    }
 
-   public boolean deleteItemInCart(int itemId) {
+   public boolean deleteItemInCart(String quoteId, int itemId) {
 
-      String json = deleteSecure(baseUri() + "/" + relativePath + "/" + cartId + "/items/" + itemId);
+      String json = deleteSecure(baseUri() + "/" + relativePath + "/" + quoteId + "/items/" + itemId);
 
       if(!validate(json)){
          return false;
