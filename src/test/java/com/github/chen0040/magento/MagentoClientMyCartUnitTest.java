@@ -85,7 +85,7 @@ public class MagentoClientMyCartUnitTest {
       item.setSku("product_dynamic_758");
 
       item = client.myCart().addItemToCart(quoteId, item);
-      boolean result = client.myCart().deleteItemInCart(quoteId, item.getItem_id());
+      boolean result = client.myCart().deleteItemInCart(item.getItem_id());
 
 
       Cart cart = client.myCart().getCart();
