@@ -107,8 +107,10 @@ public class MagentoClient extends MagentoHttpComponent implements Serializable 
       data.put("password", password);
       this.token = StringUtils.stripQuotation(httpComponent.jsonPost(uri, data));
       logger.info("loginAsClient returns: {}", token);
-      if(!token.contains("Invalid login or password")){
-         authenticated = true;
+
+      if(token.contains("You did not sign in correctly or your account is temporarily disabled") || token.contains("Invalid login or password")) {
+         this.token = "";
+         return token;
       }
       return token;
    }
