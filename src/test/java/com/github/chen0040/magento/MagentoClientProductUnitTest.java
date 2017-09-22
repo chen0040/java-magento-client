@@ -107,7 +107,8 @@ public class MagentoClientProductUnitTest {
       newProduct.setType_id("simple");
       newProduct.setAttribute_set_id(4);
       newProduct.setWeight(1);
-      newProduct.getCustom_attributes().add(new MagentoAttribute("sku_supplier", "admin"));
+      newProduct.setVisibility(Product.VISIBILITY_BOTH);
+      newProduct.setStatus(Product.STATUS_ENABLED);
 
       logger.info("add product result: {}", JSON.toJSONString(client.products().addProduct(newProduct), SerializerFeature.PrettyFormat));
    }

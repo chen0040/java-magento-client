@@ -13,10 +13,10 @@ import java.util.Date;
 @Setter
 @Getter
 public class StockItems {
-   private long item_id = 1001;
-   private long product_id = 1004;
-   private long stock_id = 1;
-   private Long qty = null;
+   private long item_id = 0;
+   private long product_id = 0;
+   private long stock_id = 0;
+   private int qty = 0;
    private boolean is_in_stock = false;
    private boolean is_qty_decimal = false;
    private boolean show_default_notification_message = false;

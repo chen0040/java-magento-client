@@ -23,7 +23,7 @@ public class MagentoClientInventoryUnitTest {
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
       logger.info("stock item: {}", JSON.toJSONString(client.inventory().getStockItems(productSku), SerializerFeature.PrettyFormat));
 
-      productSku = "B202-SKU";
+      productSku = "B203-SKU";
       logger.info("stock item: {}", JSON.toJSONString(client.inventory().getStockItems(productSku), SerializerFeature.PrettyFormat));
    }
 
@@ -34,9 +34,9 @@ public class MagentoClientInventoryUnitTest {
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
 
-      productSku = "B202-SKU";
+      productSku = "B203-SKU";
       StockItems si = client.inventory().getStockItems(productSku);
-      si.setQty(2L);
+      si.setQty(2);
       String stockId = client.inventory().saveStockItems(productSku, si);
       logger.info("stock item saved: {}", stockId);
    }

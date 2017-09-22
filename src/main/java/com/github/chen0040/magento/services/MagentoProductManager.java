@@ -64,6 +64,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
          return null;
       }
 
+      System.out.println(json);
+
       return JSON.parseObject(json, Product.class);
    }
 
@@ -115,7 +117,6 @@ public class MagentoProductManager extends MagentoHttpComponent {
       detail.put("type_id", product.getType_id());
       detail.put("attribute_set_id", product.getAttribute_set_id());
       detail.put("weight", product.getWeight());
-      detail.put("custom_attributes", product.getCustom_attributes());
       detail.put("visibility", product.getVisibility());
       detail.put("status", product.getStatus());
 
