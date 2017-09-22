@@ -9,7 +9,7 @@ Add the following dependency to your POM file:
 <dependency>
     <groupId>com.github.chen0040</groupId>
     <artifactId>java-magento-client</artifactId>
-    <version>1.0.10</version>
+    <version>1.0.11</version>
 </dependency>
 ```
 
@@ -92,15 +92,18 @@ Product product = client.products().getProductBySku(sku);
 client.loginAsAdmin(username, password);
 
 // create or update a product 
-Product newProduct = new Product();
-newProduct.setSku("B203-SKU");
-newProduct.setName("B203");
-newProduct.setPrice(30.00);
-newProduct.setStatus(1);
-newProduct.setType_id("simple");
-newProduct.setAttribute_set_id(4);
-newProduct.setWeight(1);
-Product saveProduct = client.products().addProduct(newProduct);
+Product product = new Product();
+product.setSku("B203-SKU");
+product.setName("B203");
+product.setPrice(30.00);
+product.setStatus(1);
+product.setType_id("simple");
+product.setAttribute_set_id(4);
+product.setWeight(1);
+product.setVisibility(Product.VISIBILITY_BOTH);
+product.setStatus(Product.STATUS_ENABLED);
+      
+Product saveProduct = client.products().saveProduct(product);
 
 // delete a product
 client.products().deleteProduct(sku);

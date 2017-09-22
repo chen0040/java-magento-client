@@ -8,9 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 
@@ -99,18 +96,18 @@ public class MagentoClientProductUnitTest {
          }
       }
 
-      Product newProduct = new Product();
-      newProduct.setSku(sku);
-      newProduct.setName("B203");
-      newProduct.setPrice(30.00);
-      newProduct.setStatus(1);
-      newProduct.setType_id("simple");
-      newProduct.setAttribute_set_id(4);
-      newProduct.setWeight(1);
-      newProduct.setVisibility(Product.VISIBILITY_BOTH);
-      newProduct.setStatus(Product.STATUS_ENABLED);
+      Product product = new Product();
+      product.setSku(sku);
+      product.setName("B203");
+      product.setPrice(30.00);
+      product.setStatus(1);
+      product.setType_id("simple");
+      product.setAttribute_set_id(4);
+      product.setWeight(1);
+      product.setVisibility(Product.VISIBILITY_BOTH);
+      product.setStatus(Product.STATUS_ENABLED);
 
-      logger.info("add product result: {}", JSON.toJSONString(client.products().addProduct(newProduct), SerializerFeature.PrettyFormat));
+      logger.info("add product result: {}", JSON.toJSONString(client.products().saveProduct(product), SerializerFeature.PrettyFormat));
    }
 
 

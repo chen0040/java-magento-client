@@ -104,7 +104,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
       return getProductBySku(sku) != null;
    }
 
-   public Product addProduct(Product product){
+   public Product saveProduct(Product product){
       String sku = product.getSku();
       String url = baseUri() + "/" + relativePath4Products + "/" + escape(sku);
 
