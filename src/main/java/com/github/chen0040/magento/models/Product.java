@@ -19,7 +19,10 @@ public class Product {
    public static final int VISIBILITY_IN_CATALOG     = 2;
    public static final int VISIBILITY_IN_SEARCH      = 3;
    public static final int VISIBILITY_BOTH           = 4;
-   
+
+   public static final int STATUS_DISABLED = 2;
+   public static final int STATUS_ENABLED = 1;
+
    private long id = 1;
    private String sku = "product_dynamic_1";
    private String name =  "Simple Product 1";

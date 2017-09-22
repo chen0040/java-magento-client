@@ -117,6 +117,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
       detail.put("weight", product.getWeight());
       detail.put("custom_attributes", product.getCustom_attributes());
       detail.put("visibility", product.getVisibility());
+      detail.put("status", product.getStatus());
 
       Map<String, Object> req = new HashMap<>();
       req.put("product", detail);
