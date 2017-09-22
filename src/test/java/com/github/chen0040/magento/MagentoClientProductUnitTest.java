@@ -87,14 +87,27 @@ public class MagentoClientProductUnitTest {
       MagentoClient client = new MagentoClient(Mediator.url);
       client.loginAsAdmin(Mediator.adminUsername, Mediator.adminPassword);
 
+      String sku = "B203-SKU";
+      if(client.products().hasProduct(sku)) {
+         logger.info("Deleting {}", sku);
+         client.products().deleteProduct(sku);
+         try {
+            Thread.sleep(3000L);
+         }
+         catch (InterruptedException e) {
+            e.printStackTrace();
+         }
+      }
+
       Product newProduct = new Product();
-      newProduct.setSku("B203-SKU");
+      newProduct.setSku(sku);
       newProduct.setName("B203");
       newProduct.setPrice(30.00);
       newProduct.setStatus(1);
       newProduct.setType_id("simple");
       newProduct.setAttribute_set_id(4);
       newProduct.setWeight(1);
+      newProduct.getCustom_attributes().add(new MagentoAttribute("sku_supplier", "admin"));
 
       logger.info("add product result: {}", JSON.toJSONString(client.products().addProduct(newProduct), SerializerFeature.PrettyFormat));
    }

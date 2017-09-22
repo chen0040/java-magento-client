@@ -115,6 +115,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
       detail.put("type_id", product.getType_id());
       detail.put("attribute_set_id", product.getAttribute_set_id());
       detail.put("weight", product.getWeight());
+      detail.put("custom_attributes", product.getCustom_attributes());
 
       Map<String, Object> req = new HashMap<>();
       req.put("product", detail);
@@ -129,6 +130,8 @@ public class MagentoProductManager extends MagentoHttpComponent {
 
       return JSON.parseObject(json, Product.class);
    }
+
+
 
 
    public String page(String name, String value, String condition_type) {
