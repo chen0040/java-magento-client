@@ -14,6 +14,12 @@ import java.util.List;
 @Getter
 @Setter
 public class Product {
+
+   public static final int VISIBILITY_NOT_VISIBLE    = 1;
+   public static final int VISIBILITY_IN_CATALOG     = 2;
+   public static final int VISIBILITY_IN_SEARCH      = 3;
+   public static final int VISIBILITY_BOTH           = 4;
+   
    private long id = 1;
    private String sku = "product_dynamic_1";
    private String name =  "Simple Product 1";
