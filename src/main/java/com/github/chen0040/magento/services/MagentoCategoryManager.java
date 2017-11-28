@@ -1,18 +1,16 @@
 package com.github.chen0040.magento.services;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.github.chen0040.magento.MagentoClient;
 import com.github.chen0040.magento.models.Category;
 import com.github.chen0040.magento.models.CategoryProduct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -21,7 +19,6 @@ import java.util.Map;
 public class MagentoCategoryManager extends MagentoHttpComponent {
    private MagentoClient client;
    private static final String relativePath4Categories = "rest/V1/categories";
-   private static final Logger logger = LoggerFactory.getLogger(MagentoCategoryManager.class);
 
    public MagentoCategoryManager(MagentoClient client) {
       super(client.getHttpComponent());
@@ -105,11 +102,19 @@ public class MagentoCategoryManager extends MagentoHttpComponent {
 
    public Category getCategoryByIdClean(long id) {
       String uri = baseUri() + "/" + relativePath4Categories + "/" + id;
-      String json = getSecured(uri);
-      if(!validate(json)){
-         return null;
-      }
+      return getCategoryByUrl(uri);
+   }
 
+   public Category getRootCategoryById(long id) {
+      String uri = baseUri() + "/" + relativePath4Categories + "?rootCategoryId=" + id;
+      return getCategoryByUrl(uri);
+   }
+
+   private Category getCategoryByUrl(String uri) {
+      String json = getSecured(uri);
+      if (!validate(json)) {
+        return null;
+      }
       return JSON.parseObject(json, Category.class);
    }
 
