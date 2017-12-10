@@ -2,7 +2,8 @@ package com.github.chen0040.magento.models;
 
 import lombok.Data;
 
-@Data
+@Setter
+@Getter
 public class CategoryAttribute {
 
   private String attribute_code;
