@@ -1,13 +1,11 @@
 package com.github.chen0040.magento.models;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -38,7 +36,7 @@ public class Product {
    private double weight = 1;
    private List<MagentoAttribute> extension_attributes = new ArrayList<>();
    private List<String> product_links = new ArrayList<>();
-   private List<Double> tier_prices = new ArrayList<>();
+   private List<TierPrices> tier_prices = new ArrayList<>();
    private List<MagentoAttribute> custom_attributes = new ArrayList<>();
 
 }
