@@ -1,0 +1,133 @@
+{
+  "id": 188,
+  "sku": "8544596",
+  "name": "BATA-8544596",
+  "attribute_set_id": 4,
+  "price": 0,
+  "status": 1,
+  "visibility": 4,
+  "type_id": "configurable",
+  "created_at": "2018-01-23 12:25:49",
+  "updated_at": "2018-01-23 12:25:49",
+  "weight": 0.5,
+  "extension_attributes": {
+    "configurable_product_options": [{
+      "id": 77,
+      "attribute_id": "93",
+      "label": "Color",
+      "position": 0,
+      "values": [{
+        "value_index": 10
+      }],
+      "product_id": 188
+    }, {
+      "id": 78,
+      "attribute_id": "135",
+      "label": "Size",
+      "position": 1,
+      "values": [{
+        "value_index": 4
+      }, {
+        "value_index": 5
+      }, {
+        "value_index": 6
+      }, {
+        "value_index": 7
+      }, {
+        "value_index": 8
+      }],
+      "product_id": 188
+    }],
+    "configurable_product_links": [183, 184, 185, 186, 187]
+  },
+  "product_links": [],
+  "options": [],
+  "media_gallery_entries": [{
+    "id": 305,
+    "media_type": "image",
+    "label": null,
+    "position": 1,
+    "disabled": false,
+    "types": ["image", "small_image", "thumbnail", "swatch_image"],
+    "file": "\/8\/5\/854-4596-a_1_2.jpg"
+  }, {
+    "id": 306,
+    "media_type": "image",
+    "label": null,
+    "position": 2,
+    "disabled": false,
+    "types": [],
+    "file": "\/8\/5\/854-4596-b_2.jpg"
+  }, {
+    "id": 307,
+    "media_type": "image",
+    "label": null,
+    "position": 3,
+    "disabled": false,
+    "types": [],
+    "file": "\/8\/5\/854-4596-c_2.jpg"
+  }, {
+    "id": 308,
+    "media_type": "image",
+    "label": null,
+    "position": 4,
+    "disabled": false,
+    "types": [],
+    "file": "\/8\/5\/854-4596-d_2.jpg"
+  }, {
+    "id": 309,
+    "media_type": "image",
+    "label": null,
+    "position": 5,
+    "disabled": false,
+    "types": [],
+    "file": "\/8\/5\/854-4596-e_2.jpg"
+  }],
+  "tier_prices": [],
+  "custom_attributes": [{
+    "attribute_code": "meta_title",
+    "value": "BATA-8544596"
+  }, {
+    "attribute_code": "meta_keyword",
+    "value": "BATA-8544596"
+  }, {
+    "attribute_code": "meta_description",
+    "value": " "
+  }, {
+    "attribute_code": "image",
+    "value": "\/8\/5\/854-4596-a_1_2.jpg"
+  }, {
+    "attribute_code": "small_image",
+    "value": "\/8\/5\/854-4596-a_1_2.jpg"
+  }, {
+    "attribute_code": "thumbnail",
+    "value": "\/8\/5\/854-4596-a_1_2.jpg"
+  }, {
+    "attribute_code": "category_ids",
+    "value": ["83", "97", "121"]
+  }, {
+    "attribute_code": "options_container",
+    "value": "container2"
+  }, {
+    "attribute_code": "required_options",
+    "value": "1"
+  }, {
+    "attribute_code": "has_options",
+    "value": "1"
+  }, {
+    "attribute_code": "url_key",
+    "value": "bata-8544596"
+  }, {
+    "attribute_code": "swatch_image",
+    "value": "\/8\/5\/854-4596-a_1_2.jpg"
+  }, {
+    "attribute_code": "tax_class_id",
+    "value": "2"
+  }, {
+    "attribute_code": "gift_message_available",
+    "value": "2"
+  }, {
+    "attribute_code": "size",
+    "value": "4"
+  }]
+}

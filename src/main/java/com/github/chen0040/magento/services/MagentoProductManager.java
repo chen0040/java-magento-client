@@ -64,7 +64,7 @@ public class MagentoProductManager extends MagentoHttpComponent {
          return null;
       }
 
-      System.out.println(json);
+      System.out.println("output: " + json);
 
       return JSON.parseObject(json, Product.class);
    }

@@ -4,6 +4,7 @@ package com.github.chen0040.magento.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,9 +35,15 @@ public class Product {
    private String created_at = "2017-05-03 03:46:13";
    private String updated_at = "2017-05-03 03:46:13";
    private double weight = 1;
+
+   @JSONField(deserializeUsing = ProductAttributeValueDeserializer.class)
    private List<MagentoAttribute> extension_attributes = new ArrayList<>();
    private List<String> product_links = new ArrayList<>();
    private List<TierPrices> tier_prices = new ArrayList<>();
+
+   @JSONField(deserializeUsing = ProductAttributeValueDeserializer.class)
    private List<MagentoAttribute> custom_attributes = new ArrayList<>();
 
 }
+
+
